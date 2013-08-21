@@ -1,0 +1,4 @@
+load:
+  - ../js/game_logic.js
+test:
+  - game_logic_test.js
