@@ -1,31 +1,15 @@
 "use strict";
-// helper functions
 
-var assert = function (condition, message) {
-  console.assert(condition, message);
-};
-
-// game logic
-
-var Cell = function (player) {
-  this.player = player || 0;
-  assert(player >= 0,
-    "Cell should be initialized with player number greater than 0");
-  this.empty = function () {
-    return this.player === 0;
-  };
-};
-
-function emptyCellArray2d(dim1, dim2) {
+var emptyCellArray2d = function (dim1, dim2) {
   var result = [];
   for (var outer = 0; outer < dim1; ++outer) {
     result[outer] = [];
     for (var inner = 0; inner < dim2; ++inner) {
-      result[outer][inner] = new Cell();
+      result[outer][inner] = new TicTacToeGame.Cell();
     }
   }
   return result;
-}
+};
 
 var TicTacToeGame = function () {
   this.firstMove = true;
@@ -35,6 +19,16 @@ var TicTacToeGame = function () {
   this.currentPlayer = 1;
   this.cellOwner = emptyCellArray2d(this.size, this.size);
   this.squareOwner = emptyCellArray2d(this.baseSize, this.baseSize);
+};
+
+
+TicTacToeGame.Cell = function (player) {
+  this.player = player || 0;
+  assert(this.player >= 0,
+    "Cell should be initialized with player number greater or equal than 0. Value passed: " + player);
+  this.empty = function () {
+    return this.player === 0;
+  };
 };
 
 TicTacToeGame.prototype.makeTurn = function (coord) {
@@ -222,8 +216,4 @@ TicTacToeGame.prototype._checkInSquareDiagonals = function (SquareCoord, current
   }
   return true;
 };
-
-
-var game = new TicTacToeGame();
-game.makeTurn({y: 3, x: 3});
 

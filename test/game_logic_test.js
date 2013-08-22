@@ -1,4 +1,5 @@
 "use strict";
+
 var gameLogicTest = new TestCase("GameLogicTest");
 
 gameLogicTest.prototype.testTurnLeadsToSameSquare = function () {
@@ -11,13 +12,15 @@ gameLogicTest.prototype.testTurnLeadsToSameSquare = function () {
 };
 
 gameLogicTest.prototype.testCell = function() {
-  assertTrue(new Cell().empty());
-  assertFalse(new Cell(1).empty());
-  assertFalse(new Cell(2).empty());
+  assertTrue(new TicTacToeGame.Cell().empty());
+  assertFalse(new TicTacToeGame.Cell(1).empty());
+  assertFalse(new TicTacToeGame.Cell(2).empty());
 
-  assertTrue(new Cell(1).player === 1);
-  assertTrue(new Cell(2).player === 2);
-  assertException(new Cell(-1));
+  assertTrue(new TicTacToeGame.Cell(1).player === 1);
+  assertTrue(new TicTacToeGame.Cell(2).player === 2);
+  assertException(function() {
+    new TicTacToeGame.Cell(-1);
+  }, "AssertionError");
 };
 
 gameLogicTest.prototype.testNotStartLeadingToSameSquare = function() {
