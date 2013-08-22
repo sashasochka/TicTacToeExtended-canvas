@@ -1,64 +1,72 @@
+"use strict";
+
+console.assert(typeof TicTacToeGame !== 'undefined');
+
+var game = new TicTacToeGame();
+
+var displaySettings = new function () {
+  this.container = 'TicTacToeCanvas';
+  this.width = 800;
+  this.height = 800;
+  this.cellBorderWidth = 7;
+  this.freeSpaceBetweenCells = {
+    x: 5,
+    y: 5
+  };
+  this.firstCellCoord = {
+    x: Math.floor(this.cellBorderWidth / 2 + this.freeSpaceBetweenCells.x / 2) + 3,
+    y: Math.floor(this.cellBorderWidth / 2 + this.freeSpaceBetweenCells.y / 2) + 3
+  };
+  this.cellsDim = {
+    width:  Math.floor(this.width / game.size -
+      this.cellBorderWidth - this.freeSpaceBetweenCells.x / 2),
+    height:  Math.floor(this.height / game.size -
+      this.cellBorderWidth - this.freeSpaceBetweenCells.y / 2)
+  };
+  this.cellsCoordDiff = {
+    x: Math.floor(this.width / game.size),
+    y: Math.floor(this.height / game.size)
+  };
+};
 
 var stage = new Kinetic.Stage({
-  container: 'container',
-  width: 578,
-  height: 200
-});
-
-var layer = new Kinetic.Layer();
-
-var redLine = new Kinetic.Line({
-  points: [73, 70, 340, 23, 450, 60, 500, 20],
-  stroke: 'red',
-  strokeWidth: 15,
-  lineCap: 'round',
-  lineJoin: 'round'
-});
-
-// dashed line
-var greenLine = new Kinetic.Line({
-  points: [73, 70, 340, 23, 450, 60, 500, 20],
-  stroke: 'green',
-  strokeWidth: 2,
-  lineJoin: 'round',
-
-/*
-   * line segments with a length of 33px
-   * with a gap of 10px
-   */
-
-  dashArray: [33, 10]
-});
-
-// complex dashed and dotted line
-var blueLine = new Kinetic.Line({
-  points: [73, 70, 340, 23, 450, 60, 500, 20],
-  stroke: 'blue',
-  strokeWidth: 10,
-  lineCap: 'round',
-  lineJoin: 'round',
-
-/*
-   * line segments with a length of 29px with a gap
-   * of 20px followed by a line segment of 0.001px (a dot)
-   * followed by a gap of 20px
-   */
-
-  dashArray: [29, 20, 0.001, 20]
-});
+    container: displaySettings.container,
+    width: displaySettings.width,
+    height: displaySettings.height
+  }),
+  layer = new Kinetic.Layer();
 
 
-/*
-* since each line has the same point array, we can
-* adjust the position of each one using the
-* move() method
-*/
+var SmallCell = function(coord) {
+  var rectSettings = {
+    x: displaySettings.firstCellCoord.x + coord.x * displaySettings.cellsCoordDiff.x,
+    y: displaySettings.firstCellCoord.y + coord.y * displaySettings.cellsCoordDiff.y,
+    width: displaySettings.cellsDim.width,
+    height: displaySettings.cellsDim.height,
+    fill: 'green',
+    stroke: 'black',
+    strokeWidth: displaySettings.cellBorderWidth
+  };
+  Kinetic.Rect.call(this, rectSettings);
+};
 
-redLine.move(0, 5);
-greenLine.move(0, 55);
-blueLine.move(0, 105);
+SmallCell.prototype = Object.create(Kinetic.Rect.prototype);
 
-layer.add(redLine);
-layer.add(greenLine);
-layer.add(blueLine);
+
+layer.add(new Kinetic.Rect({
+  x: 0,
+  y: 0,
+  width: 800,
+  height: 800,
+  fill: 'orange',
+  stroke: 'gray',
+  strokeWidth: 0
+}));
+
+// add the shape to the layer
+for (var y = 0; y < game.size; ++y) {
+  for (var x = 0; x < game.size; ++x) {
+    layer.add(new SmallCell({y: y,  x : x}));
+  }
+}
 stage.add(layer);
