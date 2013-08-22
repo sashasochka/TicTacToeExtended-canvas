@@ -1,4 +1,3 @@
-/*
 
 var stage = new Kinetic.Stage({
   container: 'container',
@@ -22,11 +21,11 @@ var greenLine = new Kinetic.Line({
   stroke: 'green',
   strokeWidth: 2,
   lineJoin: 'round',
-  */
+
 /*
    * line segments with a length of 33px
    * with a gap of 10px
-   *//*
+   */
 
   dashArray: [33, 10]
 });
@@ -38,22 +37,22 @@ var blueLine = new Kinetic.Line({
   strokeWidth: 10,
   lineCap: 'round',
   lineJoin: 'round',
-  */
+
 /*
    * line segments with a length of 29px with a gap
    * of 20px followed by a line segment of 0.001px (a dot)
    * followed by a gap of 20px
-   *//*
+   */
 
   dashArray: [29, 20, 0.001, 20]
 });
 
-*/
+
 /*
- * since each line has the same point array, we can
- * adjust the position of each one using the
- * move() method
- *//*
+* since each line has the same point array, we can
+* adjust the position of each one using the
+* move() method
+*/
 
 redLine.move(0, 5);
 greenLine.move(0, 55);
@@ -62,4 +61,4 @@ blueLine.move(0, 105);
 layer.add(redLine);
 layer.add(greenLine);
 layer.add(blueLine);
-stage.add(layer);*/
+stage.add(layer);
