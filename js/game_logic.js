@@ -92,6 +92,7 @@ TicTacToeGame.prototype.winner = function () {
   if (this._checkWinner(2)) {
     return 2;
   }
+
   // check draw
   // draw if next player cannot move anymore
   if (!this.firstMove) {
@@ -107,7 +108,7 @@ TicTacToeGame.prototype.winner = function () {
       }
     }
     if (cannotMove) {
-      return TicTacToeGame.draw1;
+      return TicTacToeGame.draw;
     }
   }
 
@@ -115,11 +116,18 @@ TicTacToeGame.prototype.winner = function () {
   for (row = 0; row < this.baseSize; ++row) {
     for (col = 0; col < this.baseSize; ++col) {
       if (this.squareOwner[row][col].empty()) {
-        return TicTacToeGame.undefinedWinner
+        return TicTacToeGame.undefinedWinner;
       }
     }
   }
   return TicTacToeGame.draw;
+};
+
+TicTacToeGame.prototype.nextSquare = function () {
+  assert(!this.firstMove, "Undefined on first move!");
+  var y = this.previousTurnCoord.y % this.baseSize;
+  var x = this.previousTurnCoord.x % this.baseSize;
+  return this.squareOwner[y][x];
 };
 
 TicTacToeGame.prototype.turnLeadsToSameSquare = function (coord) {

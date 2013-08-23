@@ -55,6 +55,23 @@ gameLogicTest.prototype.testMoveSameCell = function () {
   assertFalse(game.makeTurn({x: 1, y: 0}));
 };
 
+gameLogicTest.prototype.testSquareTopLeftCellCoord = function () {
+  var game = new TicTacToeGame();
+  assertSame(game.squareOwner[1][2].topLeftCellCoord.x, 6);
+  assertSame(game.squareOwner[1][2].topLeftCellCoord.y, 3);
+};
+
+gameLogicTest.prototype.testNextSquare = function () {
+  var game = new TicTacToeGame();
+  assertException(function () {
+    game.nextSquare()
+  }, assert.assertionError.name);
+  game.makeTurn({y: 0, x: 1});
+
+  assertSame(game.nextSquare().topLeftCellCoord.y, 0);
+  assertSame(game.nextSquare().topLeftCellCoord.x, 3);
+};
+
 gameLogicTest.prototype.testCurrentPlayer = function () {
   var game = new TicTacToeGame();
   assertSame(game.currentPlayer, 1);
