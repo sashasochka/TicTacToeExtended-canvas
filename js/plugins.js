@@ -52,4 +52,3 @@ assert.AssertionError = function (msg) {
   };
 };
 
-assert.AssertionError.name = "AssertionError";

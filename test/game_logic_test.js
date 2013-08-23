@@ -65,7 +65,7 @@ gameLogicTest.prototype.testNextSquare = function () {
   var game = new TicTacToeGame();
   assertException(function () {
     game.nextSquare()
-  }, assert.assertionError.name);
+  }, assert.AssertionError.name);
   game.makeTurn({y: 0, x: 1});
 
   assertSame(game.nextSquare().topLeftCellCoord.y, 0);
