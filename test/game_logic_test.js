@@ -53,5 +53,13 @@ gameLogicTest.prototype.testMoveSameCell = function () {
   assertTrue(game.makeTurn({x: 1, y: 0}));
   assertTrue(game.makeTurn({x: 4, y: 0}));
   assertFalse(game.makeTurn({x: 1, y: 0}));
+}
 
+gameLogicTest.prototype.testCurrentPlayer = function () {
+  var game = new TicTacToeGame();
+  assertTrue(game.currentPlayer == 1);
+  game.makeTurn({x: 1, y: 0});
+  assertTrue(game.currentPlayer == 2);
+  assertFalse(game.makeTurn({x: 1, y: 0}));
+  assertTrue(game.currentPlayer == 2);
 }
