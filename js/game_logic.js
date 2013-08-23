@@ -27,9 +27,10 @@ TicTacToeGame.Cell = function (player) {
   this.player = player || 0;
   assert(this.player >= 0,
     "Cell should be initialized with player number greater or equal than 0. Value passed: " + player);
-  this.empty = function () {
-    return this.player === 0;
-  };
+};
+
+TicTacToeGame.Cell.prototype.empty = function () {
+  return this.player === 0;
 };
 
 TicTacToeGame.prototype.makeTurn = function (coord) {
