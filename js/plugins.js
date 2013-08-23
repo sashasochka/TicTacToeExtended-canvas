@@ -28,11 +28,11 @@
 
 var assert = function (condition, message) {
   if (!condition) {
-    throw new assert.assertionError(message);
+    throw new assert.AssertionError(message);
   }
 };
 
-assert.assertionError = function (msg) {
+assert.AssertionError = function (msg) {
   this.name = "AssertionError";
   this.message = msg;
   this.toString = function () {
