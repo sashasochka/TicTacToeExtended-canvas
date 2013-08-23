@@ -11,19 +11,19 @@ gameLogicTest.prototype.testTurnLeadsToSameSquare = function () {
   assertFalse(game.turnLeadsToSameSquare({x: 3, y: 4}));
 };
 
-gameLogicTest.prototype.testCell = function() {
+gameLogicTest.prototype.testCell = function () {
   assertTrue(new TicTacToeGame.Cell().empty());
   assertFalse(new TicTacToeGame.Cell(1).empty());
   assertFalse(new TicTacToeGame.Cell(2).empty());
 
   assertTrue(new TicTacToeGame.Cell(1).player === 1);
   assertTrue(new TicTacToeGame.Cell(2).player === 2);
-  assertException(function() {
+  assertException(function () {
     new TicTacToeGame.Cell(-1);
   }, assert.AssertionError.name);
 };
 
-gameLogicTest.prototype.testNotStartLeadingToSameSquare = function() {
+gameLogicTest.prototype.testNotStartLeadingToSameSquare = function () {
   var game = new TicTacToeGame();
   assertFalse(game.makeTurn({x: 4, y: 4}));
   assertFalse(game.makeTurn({x: 8, y: 8}));
@@ -31,7 +31,7 @@ gameLogicTest.prototype.testNotStartLeadingToSameSquare = function() {
   assertTrue(game.makeTurn({x: 5, y: 3}));
 };
 
-gameLogicTest.prototype.testDependencyOnPreviousMove = function() {
+gameLogicTest.prototype.testDependencyOnPreviousMove = function () {
   var game = new TicTacToeGame();
 
   assertTrue(game.makeTurn({x: 0, y: 5}));
