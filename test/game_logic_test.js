@@ -20,7 +20,7 @@ gameLogicTest.prototype.testCell = function() {
   assertTrue(new TicTacToeGame.Cell(2).player === 2);
   assertException(function() {
     new TicTacToeGame.Cell(-1);
-  }, "AssertionError");
+  }, assert.AssertionError.name);
 };
 
 gameLogicTest.prototype.testNotStartLeadingToSameSquare = function() {
