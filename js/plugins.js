@@ -26,6 +26,18 @@
 
 // helper functions
 
+var array2dInit = function (dim1, dim2, fun) {
+  var result = [];
+  for (var outer = 0; outer < dim1; ++outer) {
+    result[outer] = [];
+    for (var inner = 0; inner < dim2; ++inner) {
+      result[outer][inner] = fun({y: outer,  x: inner});
+    }
+  }
+  return result;
+};
+
+// assertions
 var assert = function (condition, message) {
   if (!condition) {
     throw new assert.AssertionError(message);

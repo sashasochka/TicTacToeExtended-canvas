@@ -36,15 +36,15 @@ gameLogicTest.prototype.testDependencyOnPreviousMove = function () {
 
   assertTrue(game.makeTurn({x: 0, y: 5}));
   assertFalse(game.firstMove);
-  assertSame(game.previousTurnCoord.x ,  0);
-  assertSame(game.previousTurnCoord.y ,  5);
+  assertSame(game.previousTurnCoord.x , 0);
+  assertSame(game.previousTurnCoord.y , 5);
 
   assertFalse(game.makeTurn({x: 0, y: 3}));
   assertFalse(game.makeTurn({x: 3, y: 8}));
   assertFalse(game.makeTurn({x: 5, y: 8}));
 
-  assertSame(game.previousTurnCoord.x ,  0);
-  assertSame(game.previousTurnCoord.y ,  5);
+  assertSame(game.previousTurnCoord.x, 0);
+  assertSame(game.previousTurnCoord.y, 5);
   assertTrue(game.makeTurn({x: 2, y: 8}));
 };
 
@@ -53,13 +53,13 @@ gameLogicTest.prototype.testMoveSameCell = function () {
   assertTrue(game.makeTurn({x: 1, y: 0}));
   assertTrue(game.makeTurn({x: 4, y: 0}));
   assertFalse(game.makeTurn({x: 1, y: 0}));
-}
+};
 
 gameLogicTest.prototype.testCurrentPlayer = function () {
   var game = new TicTacToeGame();
-  assertSame(game.currentPlayer,  1);
+  assertSame(game.currentPlayer, 1);
   game.makeTurn({x: 1, y: 0});
-  assertSame(game.currentPlayer,  2);
+  assertSame(game.currentPlayer, 2);
   assertFalse(game.makeTurn({x: 1, y: 0}));
-  assertSame(game.currentPlayer,  2);
-}
+  assertSame(game.currentPlayer, 2);
+};

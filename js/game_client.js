@@ -74,7 +74,7 @@ var SmallCell = function(coord) {
           rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
           rectSettings.y + displaySettings.crossDiagonalPadding.x
         ],
-        stroke: player == 1 ? 'red' : 'blue',
+        stroke: player === 1 ? 'red' : 'blue',
         strokeWidth: 5,
         lineCap: 'round',
         lineJoin: 'round'
@@ -85,7 +85,7 @@ var SmallCell = function(coord) {
     } else {
       console.log('Invalid move!');
     }
-  })
+  });
 };
 
 SmallCell.prototype = Object.create(Kinetic.Rect.prototype);

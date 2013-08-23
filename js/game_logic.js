@@ -1,15 +1,5 @@
 "use strict";
 
-var emptyCellArray2d = function (dim1, dim2) {
-  var result = [];
-  for (var outer = 0; outer < dim1; ++outer) {
-    result[outer] = [];
-    for (var inner = 0; inner < dim2; ++inner) {
-      result[outer][inner] = new TicTacToeGame.Cell();
-    }
-  }
-  return result;
-};
 
 var TicTacToeGame = function () {
   this.firstMove = true;
@@ -17,8 +7,19 @@ var TicTacToeGame = function () {
   this.baseSize = 3;
   this.size = this.baseSize * this.baseSize;
   this.currentPlayer = 1;
-  this.cellOwner = emptyCellArray2d(this.size, this.size);
-  this.squareOwner = emptyCellArray2d(this.baseSize, this.baseSize);
+  this.cellOwner = array2dInit(this.size, this.size, function () {
+    return new TicTacToeGame.Cell();
+  });
+
+  var tmpOuterThis = this;
+  this.squareOwner = array2dInit(this.baseSize, this.baseSize, function (coord) {
+    var result = new TicTacToeGame.Cell();
+    result.topLeftCellCoord = {
+      y: coord.y * tmpOuterThis.baseSize,
+      x: coord.x * tmpOuterThis.baseSize
+    };
+    return result;
+  });
 };
 
 
