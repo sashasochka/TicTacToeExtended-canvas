@@ -65,7 +65,7 @@ TicTacToeGame.prototype.makeTurn = function (coord) {
 
 
   // making a turn itself
-  this.cellOwner[coord.y][coord.x] = this.currentPlayer;
+  this.cellOwner[coord.y][coord.x].player = this.currentPlayer;
 
   // update big cells ownership
   this._updateSquareOwnership(squareCoord, this.currentPlayer);
