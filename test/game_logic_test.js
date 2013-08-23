@@ -16,8 +16,8 @@ gameLogicTest.prototype.testCell = function () {
   assertFalse(new TicTacToeGame.Cell(1).empty());
   assertFalse(new TicTacToeGame.Cell(2).empty());
 
-  assertTrue(new TicTacToeGame.Cell(1).player === 1);
-  assertTrue(new TicTacToeGame.Cell(2).player === 2);
+  assertSame(new TicTacToeGame.Cell(1).player, 1);
+  assertSame(new TicTacToeGame.Cell(2).player, 2);
   assertException(function () {
     new TicTacToeGame.Cell(-1);
   }, assert.AssertionError.name);
@@ -36,15 +36,15 @@ gameLogicTest.prototype.testDependencyOnPreviousMove = function () {
 
   assertTrue(game.makeTurn({x: 0, y: 5}));
   assertFalse(game.firstMove);
-  assertTrue(game.previousTurnCoord.x === 0);
-  assertTrue(game.previousTurnCoord.y === 5);
+  assertSame(game.previousTurnCoord.x ,  0);
+  assertSame(game.previousTurnCoord.y ,  5);
 
   assertFalse(game.makeTurn({x: 0, y: 3}));
   assertFalse(game.makeTurn({x: 3, y: 8}));
   assertFalse(game.makeTurn({x: 5, y: 8}));
 
-  assertTrue(game.previousTurnCoord.x === 0);
-  assertTrue(game.previousTurnCoord.y === 5);
+  assertSame(game.previousTurnCoord.x ,  0);
+  assertSame(game.previousTurnCoord.y ,  5);
   assertTrue(game.makeTurn({x: 2, y: 8}));
 };
 
@@ -57,9 +57,9 @@ gameLogicTest.prototype.testMoveSameCell = function () {
 
 gameLogicTest.prototype.testCurrentPlayer = function () {
   var game = new TicTacToeGame();
-  assertTrue(game.currentPlayer == 1);
+  assertSame(game.currentPlayer,  1);
   game.makeTurn({x: 1, y: 0});
-  assertTrue(game.currentPlayer == 2);
+  assertSame(game.currentPlayer,  2);
   assertFalse(game.makeTurn({x: 1, y: 0}));
-  assertTrue(game.currentPlayer == 2);
+  assertSame(game.currentPlayer,  2);
 }
