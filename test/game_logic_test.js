@@ -80,3 +80,36 @@ gameLogicTest.prototype.testCurrentPlayer = function () {
   assertFalse(game.makeTurn({x: 1, y: 0}));
   assertSame(game.currentPlayer, 2);
 };
+
+gameLogicTest.prototype.testGameFinishable = function () {
+  var nTests = 15;
+  for (var test = 0; test < nTests; ++test) {
+    var game = new TicTacToeGame(),
+      maxMoves = game.size * game.size,
+      moves = 0,
+      consequentFails = 0;
+    while (!game.winner() && moves < maxMoves && consequentFails < 1000) {
+      var try_coord;
+      if (!game.firstMove) {
+        try_coord = {
+          x: randrange(game.baseSize) + game.nextSquare().topLeftCellCoord.x,
+          y: randrange(game.baseSize) + game.nextSquare().topLeftCellCoord.y
+        };
+      } else {
+        try_coord = {
+          x: randrange(game.size),
+          y: randrange(game.size)
+        };
+      }
+      if (game.makeTurn(try_coord)) {
+        ++moves;
+        consequentFails = 0;
+      } else {
+        ++consequentFails;
+      }
+    }
+    assertNotSame('Game is stuck!',  game.winner(), TicTacToeGame.undefinedWinner);
+    assertTrue(moves >= 17);
+    console.log(moves +' moves; Winner: ' + game.winner());
+  }
+};

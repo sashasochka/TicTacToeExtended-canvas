@@ -26,6 +26,14 @@
 
 // helper functions
 
+var randrange = function (begin, end) {
+  if (end === undefined) {
+    end = begin;
+    begin = 0;
+  }
+  return Math.floor(Math.random() * (end - begin)) + begin;
+};
+
 var array2dInit = function (dim1, dim2, fun) {
   var result = [];
   for (var outer = 0; outer < dim1; ++outer) {
