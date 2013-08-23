@@ -72,7 +72,7 @@ TicTacToeGame.prototype.makeTurn = function (coord) {
 
   // now it's a turn of the next player
   // 2 becomes 1 and 1 becomes 2
-  this.currentPlayer = 2 - this.currentPlayer;
+  this.currentPlayer = 3 - this.currentPlayer;
   this.previousTurnCoord = {x: coord.x, y: coord.y};
   return true;
 };
