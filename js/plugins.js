@@ -33,9 +33,11 @@ var assert = function (condition, message) {
 };
 
 assert.AssertionError = function (msg) {
-  this.name = "AssertionError";
+  this.name = assert.AssertionError.name;
   this.message = msg;
   this.toString = function () {
     return this.name + ": " + this.message;
   };
 };
+
+assert.AssertionError.name = "AssertionError";
