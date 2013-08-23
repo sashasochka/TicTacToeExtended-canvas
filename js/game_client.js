@@ -9,6 +9,10 @@ var displaySettings = new function () {
   this.width = 800;
   this.height = 800;
   this.cellBorderWidth = 7;
+  this.crossDiagonalPadding = {
+    x: 5,
+    y: 5
+  };
   this.freeSpaceBetweenCells = {
     x: 5,
     y: 5
@@ -48,6 +52,40 @@ var SmallCell = function(coord) {
     strokeWidth: displaySettings.cellBorderWidth
   };
   Kinetic.Rect.call(this, rectSettings);
+  this.on('click', function () {
+    var player = game.currentPlayer;
+    if (game.makeTurn(coord)) {
+      var crossMainDiagonalLine = new Kinetic.Line({
+        points: [
+          rectSettings.x + displaySettings.crossDiagonalPadding.x,
+          rectSettings.y + displaySettings.crossDiagonalPadding.x,
+          rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
+          rectSettings.y + rectSettings.height - displaySettings.crossDiagonalPadding.y
+        ],
+        stroke: player === 1 ? 'red' : 'blue',
+        strokeWidth: 5,
+        lineCap: 'round',
+        lineJoin: 'round'
+      });
+      var crossAdditionalDiagonalLine = new Kinetic.Line({
+        points: [
+          rectSettings.x + displaySettings.crossDiagonalPadding.x,
+          rectSettings.y + rectSettings.height - displaySettings.crossDiagonalPadding.y,
+          rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
+          rectSettings.y + displaySettings.crossDiagonalPadding.x
+        ],
+        stroke: player == 1 ? 'red' : 'blue',
+        strokeWidth: 5,
+        lineCap: 'round',
+        lineJoin: 'round'
+      });
+      layer.add(crossMainDiagonalLine);
+      layer.add(crossAdditionalDiagonalLine);
+      stage.draw();
+    } else {
+      console.log('Invalid move!');
+    }
+  })
 };
 
 SmallCell.prototype = Object.create(Kinetic.Rect.prototype);
