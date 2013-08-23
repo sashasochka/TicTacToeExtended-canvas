@@ -22,6 +22,8 @@ var TicTacToeGame = function () {
   });
 };
 
+TicTacToeGame.draw = -1;
+TicTacToeGame.undefinedWinner = 0;
 
 TicTacToeGame.Cell = function (player) {
   this.player = player || 0;
@@ -80,7 +82,7 @@ TicTacToeGame.prototype.makeTurn = function (coord) {
 };
 
 TicTacToeGame.prototype.gameFinished = function () {
-  return this.winner() !== undefined;
+  return this.winner() !== TicTacToeGame.undefinedWinner;
 };
 
 TicTacToeGame.prototype.winner = function () {
@@ -90,7 +92,34 @@ TicTacToeGame.prototype.winner = function () {
   if (this._checkWinner(2)) {
     return 2;
   }
-  return undefined;
+  // check draw
+  // draw if next player cannot move anymore
+  if (!this.firstMove) {
+    var cannotMove = true;
+    var nextSquare = this.nextSquare();
+    for (var row = nextSquare.topLeftCellCoord.y;
+         row < nextSquare.topLeftCellCoord.y + this.baseSize; ++row) {
+      for (var col = nextSquare.topLeftCellCoord.x;
+           col < nextSquare.topLeftCellCoord.x + this.baseSize; ++col) {
+        if (this.cellOwner[row][col].empty()) {
+          cannotMove = false;
+        }
+      }
+    }
+    if (cannotMove) {
+      return TicTacToeGame.draw1;
+    }
+  }
+
+  // draw if impossible to win (trivial and non-100% check)
+  for (row = 0; row < this.baseSize; ++row) {
+    for (col = 0; col < this.baseSize; ++col) {
+      if (this.squareOwner[row][col].empty()) {
+        return TicTacToeGame.undefinedWinner
+      }
+    }
+  }
+  return TicTacToeGame.draw;
 };
 
 TicTacToeGame.prototype.turnLeadsToSameSquare = function (coord) {
