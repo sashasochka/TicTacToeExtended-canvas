@@ -8,7 +8,7 @@ var displaySettings = new function () {
   this.container = 'TicTacToeCanvas';
   this.width = 800;
   this.height = this.width;
-  this.cellBorderWidth = Math.min(this.width, this.height) / 100;
+  this.cellBorderWidth = Math.min(this.width, this.height) / 120;
   this.crossDiagonalPadding = {
     x: this.width / 160,
     y: this.height / 160
@@ -18,20 +18,20 @@ var displaySettings = new function () {
     y: this.height / 160
   };
   this.firstCellCoord = {
-    x: Math.floor(this.cellBorderWidth / 2 + this.freeSpaceBetweenCells.x / 2) + 3,
-    y: Math.floor(this.cellBorderWidth / 2 + this.freeSpaceBetweenCells.y / 2) + 3
+    x: this.cellBorderWidth / 2 + this.freeSpaceBetweenCells.x / 2 + 3,
+    y: this.cellBorderWidth / 2 + this.freeSpaceBetweenCells.y / 2 + 3
   };
   this.cellsDim = {
-    width:  Math.floor(this.width / game.size -
-      this.cellBorderWidth - this.freeSpaceBetweenCells.x / 2),
-    height:  Math.floor(this.height / game.size -
-      this.cellBorderWidth - this.freeSpaceBetweenCells.y / 2)
+    width:  this.width / game.size -
+      this.cellBorderWidth - this.freeSpaceBetweenCells.x / 2,
+    height:  this.height / game.size -
+      this.cellBorderWidth - this.freeSpaceBetweenCells.y / 2
   };
   this.cellsCoordDiff = {
-    x: Math.floor(this.width / game.size),
-    y: Math.floor(this.height / game.size)
+    x: (this.width - this.freeSpaceBetweenCells.x) / game.size,
+    y: (this.height - this.freeSpaceBetweenCells.y ) / game.size
   };
-};
+}();
 
 var stage = new Kinetic.Stage({
     container: displaySettings.container,
@@ -100,8 +100,8 @@ SmallCell.prototype = Object.create(Kinetic.Rect.prototype);
 layer.add(new Kinetic.Rect({
   x: 0,
   y: 0,
-  width: 800,
-  height: 800,
+  width: displaySettings.width,
+  height: displaySettings.height,
   fill: 'orange',
   stroke: 'gray',
   strokeWidth: 0
@@ -114,62 +114,49 @@ for (var y = 0; y < game.size; ++y) {
   }
 }
 
+var horizontal = 0, vertical = 1;
+var drawInnerSquareGridLine = function (index, direction) {
+  var point1, point2;
+  if (direction === horizontal) {
+    point1 = {
+      x: 0,
+      y: displaySettings.firstCellCoord.y + game.baseSize * index * displaySettings.cellsCoordDiff.y -
+        displaySettings.freeSpaceBetweenCells.y / 2 - displaySettings.cellBorderWidth / 2
+    };
+    point2 = {
+      x: displaySettings.width,
+      y: displaySettings.firstCellCoord.y + game.baseSize * index * displaySettings.cellsCoordDiff.y -
+        displaySettings.freeSpaceBetweenCells.y / 2 - displaySettings.cellBorderWidth / 2
+    };
+  } else {
+    point1 = {
+      x: displaySettings.firstCellCoord.x + game.baseSize * index * displaySettings.cellsCoordDiff.x -
+        displaySettings.freeSpaceBetweenCells.x / 2 - displaySettings.cellBorderWidth / 2,
+      y: 0
+    };
+    point2 = {
+      x: displaySettings.firstCellCoord.x + game.baseSize * index * displaySettings.cellsCoordDiff.x -
+        displaySettings.freeSpaceBetweenCells.x / 2 - displaySettings.cellBorderWidth / 2,
+      y: displaySettings.width
+    };
+  }
+  layer.add(new Kinetic.Line({
+    points: [
+      point1.x,
+      point1.y,
+      point2.x,
+      point2.y
+    ],
+    stroke: 'gray',
+    strokeWidth: displaySettings.freeSpaceBetweenCells.y,
+    lineCap: 'round',
+    lineJoin: 'round'
+  }));
+};
 
-layer.add(new Kinetic.Line({
-  points: [
-    0,
-    displaySettings.firstCellCoord.y + 3 *displaySettings.cellsCoordDiff.y - displaySettings.freeSpaceBetweenCells.y / 2 - 1,
-    displaySettings.width,
-    displaySettings.firstCellCoord.y + 3 * displaySettings.cellsCoordDiff.y - displaySettings.freeSpaceBetweenCells.y / 2 - 1
-  ],
-  stroke: 'gray',
-  strokeWidth: displaySettings.freeSpaceBetweenCells.y,
-  lineCap: 'round',
-  lineJoin: 'round'
-}));
-
-
-layer.add(new Kinetic.Line({
-  points: [
-    0,
-    displaySettings.firstCellCoord.y + 6 *displaySettings.cellsCoordDiff.y - displaySettings.freeSpaceBetweenCells.y / 2 - 1,
-    displaySettings.width,
-    displaySettings.firstCellCoord.y + 6 * displaySettings.cellsCoordDiff.y - displaySettings.freeSpaceBetweenCells.y / 2 - 1
-  ],
-  stroke: 'gray',
-  strokeWidth: displaySettings.freeSpaceBetweenCells.y,
-  lineCap: 'round',
-  lineJoin: 'round'
-}));
-
-
-
-layer.add(new Kinetic.Line({
-  points: [
-    displaySettings.firstCellCoord.x + 3 *displaySettings.cellsCoordDiff.x - displaySettings.freeSpaceBetweenCells.x / 2 - 1,
-    0,
-    displaySettings.firstCellCoord.x + 3 * displaySettings.cellsCoordDiff.x - displaySettings.freeSpaceBetweenCells.x / 2 - 1,
-    displaySettings.width
-  ],
-  stroke: 'gray',
-  strokeWidth: displaySettings.freeSpaceBetweenCells.x,
-  lineCap: 'round',
-  lineJoin: 'round'
-}));
-
-
-
-layer.add(new Kinetic.Line({
-  points: [
-    displaySettings.firstCellCoord.x + 6 *displaySettings.cellsCoordDiff.x - displaySettings.freeSpaceBetweenCells.x / 2 - 1,
-    0,
-    displaySettings.firstCellCoord.x + 6 * displaySettings.cellsCoordDiff.x - displaySettings.freeSpaceBetweenCells.x / 2 - 1,
-    displaySettings.width
-  ],
-  stroke: 'gray',
-  strokeWidth: displaySettings.freeSpaceBetweenCells.x,
-  lineCap: 'round',
-  lineJoin: 'round'
-}));
+for (var index = 1; index < game.baseSize; ++index) {
+  drawInnerSquareGridLine(index, horizontal);
+  drawInnerSquareGridLine(index, vertical);
+}
 
 stage.add(layer);
