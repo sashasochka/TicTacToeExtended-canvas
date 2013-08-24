@@ -82,6 +82,10 @@ var SmallCell = function(coord) {
       layer.add(crossMainDiagonalLine);
       layer.add(crossAdditionalDiagonalLine);
       stage.draw();
+
+      if (game.winner()) {
+        $('#notification').html('Winner: ' + game.winner());
+      }
     } else {
       console.log('Invalid move!');
     }
