@@ -26,12 +26,16 @@
 
 // helper functions
 
-var randrange = function (begin, end) {
-  if (end === undefined) {
-    end = begin;
-    begin = 0;
+var randRange = function (begin, end) {
+  var realBegin, realEnd;
+  if (end !== undefined) {
+    realBegin = begin;
+    realEnd = end;
+  } else {
+    realEnd = begin;
+    realBegin = 0;
   }
-  return Math.floor(Math.random() * (end - begin)) + begin;
+  return Math.floor(Math.random() * (realEnd- realBegin)) + realBegin;
 };
 
 var array2dInit = function (dim1, dim2, fun) {

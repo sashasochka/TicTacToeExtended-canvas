@@ -64,7 +64,7 @@ gameLogicTest.prototype.testSquareTopLeftCellCoord = function () {
 gameLogicTest.prototype.testNextSquare = function () {
   var game = new TicTacToeGame();
   assertException(function () {
-    game.nextSquare()
+    game.nextSquare();
   }, assert.AssertionError.name);
   game.makeTurn({y: 0, x: 1});
 
@@ -83,25 +83,26 @@ gameLogicTest.prototype.testCurrentPlayer = function () {
 
 gameLogicTest.prototype.testGameFinishable = function () {
   var nTests = 15;
+  var nMaxConsequentFails = 1000;
   for (var test = 0; test < nTests; ++test) {
     var game = new TicTacToeGame(),
       maxMoves = game.size * game.size,
       moves = 0,
       consequentFails = 0;
-    while (!game.winner() && moves < maxMoves && consequentFails < 1000) {
-      var try_coord;
+    while (!game.winner() && moves < maxMoves && consequentFails < nMaxConsequentFails) {
+      var tryCoord;
       if (!game.firstMove) {
-        try_coord = {
-          x: randrange(game.baseSize) + game.nextSquare().topLeftCellCoord.x,
-          y: randrange(game.baseSize) + game.nextSquare().topLeftCellCoord.y
+        tryCoord = {
+          x: randRange(game.baseSize) + game.nextSquare().topLeftCellCoord.x,
+          y: randRange(game.baseSize) + game.nextSquare().topLeftCellCoord.y
         };
       } else {
-        try_coord = {
-          x: randrange(game.size),
-          y: randrange(game.size)
+        tryCoord = {
+          x: randRange(game.size),
+          y: randRange(game.size)
         };
       }
-      if (game.makeTurn(try_coord)) {
+      if (game.makeTurn(tryCoord)) {
         ++moves;
         consequentFails = 0;
       } else {
