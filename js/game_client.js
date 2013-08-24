@@ -89,7 +89,7 @@ var SmallCell = function(coord) {
         $('#notification').html('Move of player: ' + game.currentPlayer);
       }
     } else {
-      $('#notification').html('Invalid move!r: ' + game.currentPlayer);
+      $('#notification').html('Invalid move! Player: ' + game.currentPlayer);
     }
   });
 };
