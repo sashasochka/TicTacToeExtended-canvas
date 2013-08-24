@@ -7,15 +7,15 @@ var game = new TicTacToeGame();
 var displaySettings = new function () {
   this.container = 'TicTacToeCanvas';
   this.width = 800;
-  this.height = 800;
-  this.cellBorderWidth = 7;
+  this.height = this.width;
+  this.cellBorderWidth = Math.min(this.width, this.height) / 100;
   this.crossDiagonalPadding = {
-    x: 5,
-    y: 5
+    x: this.width / 160,
+    y: this.height / 160
   };
   this.freeSpaceBetweenCells = {
-    x: 5,
-    y: 5
+    x: this.width / 160,
+    y: this.height / 160
   };
   this.firstCellCoord = {
     x: Math.floor(this.cellBorderWidth / 2 + this.freeSpaceBetweenCells.x / 2) + 3,
