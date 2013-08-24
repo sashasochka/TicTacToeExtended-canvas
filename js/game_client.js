@@ -6,8 +6,20 @@ var game = new TicTacToeGame();
 
 var displaySettings = new function () {
   this.container = 'TicTacToeCanvas';
+
+  // colors
+  this.backgroundColor = 'orange';
+  this.cellColor = 'green';
+  this.cellBorderColor = 'black';
+  this.firstPlayerColor = 'red';
+  this.secondPlayerColor = 'blue';
+  this.innerSquareGridLineColor = 'gray';
+
+  // dimensions
   this.width = 800;
   this.height = this.width;
+  this.crossStrokeWidth = this.width / 160;
+  this.circleStrokeWidth = this.width / 160;
   this.cellBorderWidth = Math.min(this.width, this.height) / 140;
   this.crossDiagonalPadding = {
     x: this.width / 160,
@@ -47,8 +59,8 @@ var SmallCell = function(coord) {
     y: displaySettings.firstCellCoord.y + coord.y * displaySettings.cellsCoordDiff.y,
     width: displaySettings.cellsDim.width,
     height: displaySettings.cellsDim.height,
-    fill: 'green',
-    stroke: 'black',
+    fill: displaySettings.cellColor,
+    stroke: displaySettings.cellBorderColor,
     strokeWidth: displaySettings.cellBorderWidth
   };
   Kinetic.Rect.call(this, rectSettings);
@@ -62,8 +74,8 @@ var SmallCell = function(coord) {
           rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
           rectSettings.y + rectSettings.height - displaySettings.crossDiagonalPadding.y
         ],
-        stroke: player === 1 ? 'red' : 'blue',
-        strokeWidth: 5,
+        stroke: displaySettings[player === 1 ? 'firstPlayerColor' : 'secondPlayerColor'],
+        strokeWidth: displaySettings.crossStrokeWidth,
         lineCap: 'round',
         lineJoin: 'round'
       });
@@ -74,8 +86,8 @@ var SmallCell = function(coord) {
           rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
           rectSettings.y + displaySettings.crossDiagonalPadding.x
         ],
-        stroke: player === 1 ? 'red' : 'blue',
-        strokeWidth: 5,
+        stroke: displaySettings[player === 1 ? 'firstPlayerColor' : 'secondPlayerColor'],
+        strokeWidth: displaySettings.crossStrokeWidth,
         lineCap: 'round',
         lineJoin: 'round'
       });
@@ -102,8 +114,8 @@ layer.add(new Kinetic.Rect({
   y: 0,
   width: displaySettings.width,
   height: displaySettings.height,
-  fill: 'orange',
-  stroke: 'gray',
+  fill: displaySettings.backgroundColor,
+  stroke: displaySettings.innerSquareGridLineColor,
   strokeWidth: 0
 }));
 
@@ -147,7 +159,7 @@ var drawInnerSquareGridLine = function (index, direction) {
       point2.x,
       point2.y
     ],
-    stroke: 'gray',
+    stroke: displaySettings.innerSquareGridLineColor,
     strokeWidth: displaySettings.freeSpaceBetweenCells[horizontal ? 'y' : 'x'] + 1,
     lineCap: 'round',
     lineJoin: 'round'
