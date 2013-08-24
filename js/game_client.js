@@ -154,7 +154,7 @@ var drawInnerSquareGridLine = function (index, direction) {
   }));
 };
 
-for (var index = 1; index < game.baseSize; ++index) {
+for (var index = 0; index <= game.baseSize; ++index) {
   drawInnerSquareGridLine(index, horizontal);
   drawInnerSquareGridLine(index, vertical);
 }
