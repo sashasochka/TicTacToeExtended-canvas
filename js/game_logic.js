@@ -143,23 +143,23 @@ TicTacToeGame.prototype._squareCoord = function (coord) {
   };
 };
 
-TicTacToeGame.prototype._updateSquareOwnership = function (SquareCoord, player) {
+TicTacToeGame.prototype._updateSquareOwnership = function (squareCoord, player) {
   var playerOwnsSquare = false;
   for (var row = 0; row < this.baseSize; ++row) {
-    if (this._checkInSquareRow(SquareCoord, row, player)) {
+    if (this._checkInSquareRow(squareCoord, row, player)) {
       playerOwnsSquare = true;
     }
   }
   for (var col = 0; col < this.baseSize; ++col) {
-    if (this._checkInSquareCol(SquareCoord, col, player)) {
+    if (this._checkInSquareCol(squareCoord, col, player)) {
       playerOwnsSquare = true;
     }
   }
-  if (this._checkInSquareDiagonals(SquareCoord, player)) {
+  if (this._checkInSquareDiagonals(squareCoord, player)) {
     playerOwnsSquare = true;
   }
   if (playerOwnsSquare) {
-    this.squareOwner[SquareCoord.y][SquareCoord.x].player = player;
+    this.squareOwner[squareCoord.y][squareCoord.x].player = player;
   }
 };
 
