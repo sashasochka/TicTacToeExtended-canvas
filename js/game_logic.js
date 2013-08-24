@@ -225,7 +225,7 @@ TicTacToeGame.prototype._checkInSquareRow = function (SquareCoord, innerRow, cur
 
 TicTacToeGame.prototype._checkInSquareCol = function (SquareCoord, innerCol, currentPlayer) {
   var rowStart = this.baseSize * SquareCoord.y;
-  var col = this.baseSize * SquareCoord.y + innerCol;
+  var col = this.baseSize * SquareCoord.x + innerCol;
   for (var row = rowStart; row < rowStart + this.baseSize; ++row) {
     if (this.cellOwner[row][col].player !== currentPlayer) {
       return false;
