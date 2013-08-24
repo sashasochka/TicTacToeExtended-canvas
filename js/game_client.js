@@ -22,8 +22,8 @@ var displaySettings = new function () {
   this.circleStrokeWidth = this.width / 160;
   this.cellBorderWidth = Math.min(this.width, this.height) / 140;
   this.crossDiagonalPadding = {
-    x: this.width / 160,
-    y: this.height / 160
+    x: this.width / 110,
+    y: this.height / 110
   };
   this.freeSpaceBetweenCells = {
     x: this.width / 160,
@@ -67,32 +67,43 @@ var SmallCell = function(coord) {
   this.on('click', function () {
     var player = game.currentPlayer;
     if (game.makeTurn(coord)) {
-      var crossMainDiagonalLine = new Kinetic.Line({
-        points: [
-          rectSettings.x + displaySettings.crossDiagonalPadding.x,
-          rectSettings.y + displaySettings.crossDiagonalPadding.x,
-          rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
-          rectSettings.y + rectSettings.height - displaySettings.crossDiagonalPadding.y
-        ],
-        stroke: displaySettings[player === 1 ? 'firstPlayerColor' : 'secondPlayerColor'],
-        strokeWidth: displaySettings.crossStrokeWidth,
-        lineCap: 'round',
-        lineJoin: 'round'
-      });
-      var crossAdditionalDiagonalLine = new Kinetic.Line({
-        points: [
-          rectSettings.x + displaySettings.crossDiagonalPadding.x,
-          rectSettings.y + rectSettings.height - displaySettings.crossDiagonalPadding.y,
-          rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
-          rectSettings.y + displaySettings.crossDiagonalPadding.x
-        ],
-        stroke: displaySettings[player === 1 ? 'firstPlayerColor' : 'secondPlayerColor'],
-        strokeWidth: displaySettings.crossStrokeWidth,
-        lineCap: 'round',
-        lineJoin: 'round'
-      });
-      layer.add(crossMainDiagonalLine);
-      layer.add(crossAdditionalDiagonalLine);
+      if (player === 1) {
+        var crossMainDiagonalLine = new Kinetic.Line({
+          points: [
+            rectSettings.x + displaySettings.crossDiagonalPadding.x,
+            rectSettings.y + displaySettings.crossDiagonalPadding.x,
+            rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
+            rectSettings.y + rectSettings.height - displaySettings.crossDiagonalPadding.y
+          ],
+          stroke: displaySettings[player === 1 ? 'firstPlayerColor' : 'secondPlayerColor'],
+          strokeWidth: displaySettings.crossStrokeWidth,
+          lineCap: 'round',
+          lineJoin: 'round'
+        });
+        var crossAdditionalDiagonalLine = new Kinetic.Line({
+          points: [
+            rectSettings.x + displaySettings.crossDiagonalPadding.x,
+            rectSettings.y + rectSettings.height - displaySettings.crossDiagonalPadding.y,
+            rectSettings.x + rectSettings.width - displaySettings.crossDiagonalPadding.x,
+            rectSettings.y + displaySettings.crossDiagonalPadding.x
+          ],
+          stroke: displaySettings[player === 1 ? 'firstPlayerColor' : 'secondPlayerColor'],
+          strokeWidth: displaySettings.crossStrokeWidth,
+          lineCap: 'round',
+          lineJoin: 'round'
+        });
+        layer.add(crossMainDiagonalLine);
+        layer.add(crossAdditionalDiagonalLine);
+      } else {
+        var circle = new Kinetic.Circle({
+          x: rectSettings.x + rectSettings.width / 2,
+          y: rectSettings.y + rectSettings.height / 2,
+          radius: rectSettings.width / 2 - rectSettings.width / 15,
+          stroke: displaySettings[player === 1 ? 'firstPlayerColor' : 'secondPlayerColor'],
+          strokeWidth: 4
+        });
+        layer.add(circle);
+      }
       stage.draw();
 
       if (game.winner()) {
