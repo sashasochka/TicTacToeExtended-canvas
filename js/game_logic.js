@@ -212,8 +212,9 @@ TicTacToeGame.prototype._checkSquareDiagonals = function (player) {
   return true;
 };
 
-TicTacToeGame.prototype._checkInSquareRow = function (SquareCoord, row, currentPlayer) {
+TicTacToeGame.prototype._checkInSquareRow = function (SquareCoord, innerRow, currentPlayer) {
   var colStart = this.baseSize * SquareCoord.x;
+  var row = this.baseSize * SquareCoord.y + innerRow;
   for (var col = colStart; col < colStart + this.baseSize; ++col) {
     if (this.cellOwner[row][col].player !== currentPlayer) {
       return false;
@@ -222,8 +223,9 @@ TicTacToeGame.prototype._checkInSquareRow = function (SquareCoord, row, currentP
   return true;
 };
 
-TicTacToeGame.prototype._checkInSquareCol = function (SquareCoord, col, currentPlayer) {
+TicTacToeGame.prototype._checkInSquareCol = function (SquareCoord, innerCol, currentPlayer) {
   var rowStart = this.baseSize * SquareCoord.y;
+  var col = this.baseSize * SquareCoord.y + innerCol;
   for (var row = rowStart; row < rowStart + this.baseSize; ++row) {
     if (this.cellOwner[row][col].player !== currentPlayer) {
       return false;
