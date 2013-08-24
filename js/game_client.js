@@ -85,9 +85,11 @@ var SmallCell = function(coord) {
 
       if (game.winner()) {
         $('#notification').html('Winner: ' + game.winner());
+      } else {
+        $('#notification').html('Move of player: ' + game.currentPlayer);
       }
     } else {
-      console.log('Invalid move!');
+      $('#notification').html('Invalid move!r: ' + game.currentPlayer);
     }
   });
 };
