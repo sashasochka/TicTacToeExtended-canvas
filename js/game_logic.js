@@ -144,6 +144,9 @@ TicTacToeGame.prototype._squareCoord = function (coord) {
 };
 
 TicTacToeGame.prototype._updateSquareOwnership = function (squareCoord, player) {
+  if (!this.squareOwner[squareCoord.y][squareCoord.x].empty()) {
+    return;
+  }
   var playerOwnsSquare = false;
   for (var row = 0; row < this.baseSize; ++row) {
     if (this._checkInSquareRow(squareCoord, row, player)) {
