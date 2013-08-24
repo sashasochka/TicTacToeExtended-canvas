@@ -81,6 +81,18 @@ gameLogicTest.prototype.testCurrentPlayer = function () {
   assertSame(game.currentPlayer, 2);
 };
 
+gameLogicTest.prototype.testGameCutEarlierByDraw = function () {
+  var game = new TicTacToeGame();
+  var firstPlayerSquares = [[0, 0], [1, 1], [1, 2], [2, 0]],
+    secondPlayerSquares = [[1, 0], [0, 1], [0, 2], [2, 2]];
+  for (var i = 0; i < firstPlayerSquares.length; ++i) {
+    assertFalse(game.impossibleToWin());
+    game.squareOwner[firstPlayerSquares[i][1]][firstPlayerSquares[i][0]].player = 1;
+    game.squareOwner[secondPlayerSquares[i][1]][secondPlayerSquares[i][0]].player = 2;
+  }
+  assertTrue(game.impossibleToWin());
+};
+
 gameLogicTest.prototype.testGameFinishable = function () {
   var nTests = 15;
   var nMaxConsequentFails = 1000;

@@ -95,12 +95,13 @@ TicTacToeGame.prototype.winner = function () {
 
   // check draw
   // draw if next player cannot move anymore
+  var row, col;
   if (!this.firstMove) {
     var cannotMove = true;
     var nextSquare = this.nextSquare();
-    for (var row = nextSquare.topLeftCellCoord.y;
+    for (row = nextSquare.topLeftCellCoord.y;
          row < nextSquare.topLeftCellCoord.y + this.baseSize; ++row) {
-      for (var col = nextSquare.topLeftCellCoord.x;
+      for (col = nextSquare.topLeftCellCoord.x;
            col < nextSquare.topLeftCellCoord.x + this.baseSize; ++col) {
         if (this.cellOwner[row][col].empty()) {
           cannotMove = false;
@@ -113,14 +114,56 @@ TicTacToeGame.prototype.winner = function () {
   }
 
   // draw if impossible to win (trivial and non-100% check)
-  for (row = 0; row < this.baseSize; ++row) {
-    for (col = 0; col < this.baseSize; ++col) {
-      if (this.squareOwner[row][col].empty()) {
-        return TicTacToeGame.undefinedWinner;
+  return this.impossibleToWin() ? TicTacToeGame.draw : TicTacToeGame.undefinedWinner;
+
+};
+
+TicTacToeGame.prototype.impossibleToWin = function () {
+  var row, col;
+  for (var player = 1; player <= 2; ++player) {
+    // horizontal checks
+    for (row = 0; row < this.baseSize; ++row) {
+      var possibleWinByRow = true;
+      for (col = 0; col < this.baseSize; ++col) {
+        if (this.squareOwner[row][col].player === this.opponentTo(player)) {
+          possibleWinByRow = false;
+          break;
+        }
+      }
+      if (possibleWinByRow) {
+        return false;
       }
     }
+    // vertical checks
+    for (col = 0; col < this.baseSize; ++col) {
+      var possibleWinByCol = true;
+      for (row = 0; row < this.baseSize; ++row) {
+        if (this.squareOwner[row][col].player === this.opponentTo(player)) {
+          possibleWinByCol = false;
+          break;
+        }
+      }
+      if (possibleWinByCol) {
+        return false;
+      }
+    }
+
+    // diagonal checks
+    var possibleWinByMainDiagonal = true,
+      possibleWinByAdditionalDiagonal = true;
+    for (var index = 0; index < this.baseSize; ++index) {
+      if (this.squareOwner[index][index].player === this.opponentTo(player)) {
+        possibleWinByMainDiagonal = false;
+      }
+      if (this.squareOwner[index][this.baseSize - index - 1].player === this.opponentTo(player)) {
+        possibleWinByAdditionalDiagonal = false;
+      }
+    }
+    if (possibleWinByMainDiagonal || possibleWinByMainDiagonal) {
+      return false;
+    }
   }
-  return TicTacToeGame.draw;
+  return true;
 };
 
 TicTacToeGame.prototype.nextSquare = function () {
