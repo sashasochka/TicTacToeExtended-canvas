@@ -113,4 +113,63 @@ for (var y = 0; y < game.size; ++y) {
     layer.add(new SmallCell({y: y,  x : x}));
   }
 }
+
+
+layer.add(new Kinetic.Line({
+  points: [
+    0,
+    displaySettings.firstCellCoord.y + 3 *displaySettings.cellsCoordDiff.y - displaySettings.freeSpaceBetweenCells.y / 2 - 1,
+    displaySettings.width,
+    displaySettings.firstCellCoord.y + 3 * displaySettings.cellsCoordDiff.y - displaySettings.freeSpaceBetweenCells.y / 2 - 1
+  ],
+  stroke: 'gray',
+  strokeWidth: displaySettings.freeSpaceBetweenCells.y,
+  lineCap: 'round',
+  lineJoin: 'round'
+}));
+
+
+layer.add(new Kinetic.Line({
+  points: [
+    0,
+    displaySettings.firstCellCoord.y + 6 *displaySettings.cellsCoordDiff.y - displaySettings.freeSpaceBetweenCells.y / 2 - 1,
+    displaySettings.width,
+    displaySettings.firstCellCoord.y + 6 * displaySettings.cellsCoordDiff.y - displaySettings.freeSpaceBetweenCells.y / 2 - 1
+  ],
+  stroke: 'gray',
+  strokeWidth: displaySettings.freeSpaceBetweenCells.y,
+  lineCap: 'round',
+  lineJoin: 'round'
+}));
+
+
+
+layer.add(new Kinetic.Line({
+  points: [
+    displaySettings.firstCellCoord.x + 3 *displaySettings.cellsCoordDiff.x - displaySettings.freeSpaceBetweenCells.x / 2 - 1,
+    0,
+    displaySettings.firstCellCoord.x + 3 * displaySettings.cellsCoordDiff.x - displaySettings.freeSpaceBetweenCells.x / 2 - 1,
+    displaySettings.width
+  ],
+  stroke: 'gray',
+  strokeWidth: displaySettings.freeSpaceBetweenCells.x,
+  lineCap: 'round',
+  lineJoin: 'round'
+}));
+
+
+
+layer.add(new Kinetic.Line({
+  points: [
+    displaySettings.firstCellCoord.x + 6 *displaySettings.cellsCoordDiff.x - displaySettings.freeSpaceBetweenCells.x / 2 - 1,
+    0,
+    displaySettings.firstCellCoord.x + 6 * displaySettings.cellsCoordDiff.x - displaySettings.freeSpaceBetweenCells.x / 2 - 1,
+    displaySettings.width
+  ],
+  stroke: 'gray',
+  strokeWidth: displaySettings.freeSpaceBetweenCells.x,
+  lineCap: 'round',
+  lineJoin: 'round'
+}));
+
 stage.add(layer);
