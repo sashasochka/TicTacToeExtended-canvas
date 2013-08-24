@@ -8,7 +8,7 @@ var displaySettings = new function () {
   this.container = 'TicTacToeCanvas';
   this.width = 800;
   this.height = this.width;
-  this.cellBorderWidth = Math.min(this.width, this.height) / 120;
+  this.cellBorderWidth = Math.min(this.width, this.height) / 140;
   this.crossDiagonalPadding = {
     x: this.width / 160,
     y: this.height / 160
@@ -121,22 +121,22 @@ var drawInnerSquareGridLine = function (index, direction) {
     point1 = {
       x: 0,
       y: displaySettings.firstCellCoord.y + game.baseSize * index * displaySettings.cellsCoordDiff.y -
-        displaySettings.freeSpaceBetweenCells.y / 2 - displaySettings.cellBorderWidth / 2
+        displaySettings.freeSpaceBetweenCells.y / 2 - displaySettings.cellBorderWidth / 2 + 1
     };
     point2 = {
       x: displaySettings.width,
       y: displaySettings.firstCellCoord.y + game.baseSize * index * displaySettings.cellsCoordDiff.y -
-        displaySettings.freeSpaceBetweenCells.y / 2 - displaySettings.cellBorderWidth / 2
+        displaySettings.freeSpaceBetweenCells.y / 2 - displaySettings.cellBorderWidth / 2 + 1
     };
   } else {
     point1 = {
       x: displaySettings.firstCellCoord.x + game.baseSize * index * displaySettings.cellsCoordDiff.x -
-        displaySettings.freeSpaceBetweenCells.x / 2 - displaySettings.cellBorderWidth / 2,
+        displaySettings.freeSpaceBetweenCells.x / 2 - displaySettings.cellBorderWidth / 2 + 1,
       y: 0
     };
     point2 = {
       x: displaySettings.firstCellCoord.x + game.baseSize * index * displaySettings.cellsCoordDiff.x -
-        displaySettings.freeSpaceBetweenCells.x / 2 - displaySettings.cellBorderWidth / 2,
+        displaySettings.freeSpaceBetweenCells.x / 2 - displaySettings.cellBorderWidth / 2 + 1,
       y: displaySettings.width
     };
   }
@@ -148,7 +148,7 @@ var drawInnerSquareGridLine = function (index, direction) {
       point2.y
     ],
     stroke: 'gray',
-    strokeWidth: displaySettings.freeSpaceBetweenCells.y,
+    strokeWidth: displaySettings.freeSpaceBetweenCells[horizontal ? 'y' : 'x'] + 1,
     lineCap: 'round',
     lineJoin: 'round'
   }));
