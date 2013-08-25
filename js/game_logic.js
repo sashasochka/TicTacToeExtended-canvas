@@ -74,10 +74,12 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   if (!this.cellOwner[coord.y][coord.x].empty()) {
     return false;
   }
-  // cannot put in (a, a) point in the first move by rules
-  if (this.firstMove && this.turnLeadsToSameSquare(coord)) {
-    return false;
-  }
+
+  //  // cannot put in (a, a) point in the first move by rules
+  //  if (this.firstMove && this.turnLeadsToSameSquare(coord)) {
+  //    return false;
+  //  }
+
   // should put a mark only in the big square defined by the previous opponent move
   return this.firstMove || isSameCoord(correctSquareCoord, squareCoord);
 };
