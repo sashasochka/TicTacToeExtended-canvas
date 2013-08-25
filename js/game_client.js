@@ -52,6 +52,7 @@ var Client = function (container, width, height) {
       height: this.height
     });
   this.layer = new Kinetic.Layer();
+  this.stage.add(this.layer);
 };
 
 // constants
@@ -69,7 +70,7 @@ Client.Cell = function (client, coord) {
     strokeWidth: client.cellBorderWidth
   };
   Kinetic.Rect.call(this, rectSettings);
-  this.on('click', function () {
+  this.on('click tap', function () {
     var player = client.gameEngine.currentPlayer;
     if (client.gameEngine.makeTurn(coord)) {
       if (player === 1) {
@@ -193,11 +194,28 @@ Client.prototype._innerGridLineCoordFormula = function (index, dim) {
 };
 
 Client.prototype.display = function () {
-  this.stage.add(this.layer);
+  this.stage.draw();
 };
 
-var client = new Client('TicTacToeCanvas', 800);
+var clientSize = function () {
+  var deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width,
+    deviceHeight = (window.innerHeight > 0) ? window.innerHeight : screen.height;
+  var result = Math.min(800, Math.min(deviceWidth, deviceHeight) * 7 / 8);
+  $('#notification').html('Size: ' + result + ', width: ' + deviceHeight + ', height: ' + deviceWidth);
+  return result;
+};
+
+var curClientSize = clientSize();
+var client = new Client('TicTacToeCanvas', curClientSize);
 client.addBackground();
 client.addCells();
 client.addSquareGridLines();
+window.addEventListener("orientationchange", function() {
+  var newClientSize = clientSize();
+  var scaleArg = newClientSize / curClientSize;
+  client.layer.setScale(scaleArg);
+  client.stage.setWidth(newClientSize);
+  client.stage.setHeight(newClientSize);
+  client.display();
+}, false);
 client.display();
