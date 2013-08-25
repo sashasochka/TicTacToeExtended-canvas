@@ -193,6 +193,15 @@ Client.prototype._innerGridLineCoordFormula = function (index, dim) {
     this.freeSpaceBetweenCells[dim] / 2 - this.cellBorderWidth / 2 + 1;
 };
 
+Client.prototype.updateSize = function() {
+  var newClientSize = clientSize();
+  var scaleArg = newClientSize / curClientSize;
+  client.layer.setScale(scaleArg);
+  client.stage.setWidth(newClientSize);
+  client.stage.setHeight(newClientSize);
+  client.display();
+};
+
 Client.prototype.display = function () {
   this.stage.draw();
 };
@@ -210,12 +219,6 @@ var client = new Client('TicTacToeCanvas', curClientSize);
 client.addBackground();
 client.addCells();
 client.addSquareGridLines();
-window.addEventListener("orientationchange", function() {
-  var newClientSize = clientSize();
-  var scaleArg = newClientSize / curClientSize;
-  client.layer.setScale(scaleArg);
-  client.stage.setWidth(newClientSize);
-  client.stage.setHeight(newClientSize);
-  client.display();
-}, false);
+window.addEventListener("orientationchange", client.updateSize, false);
+$(window).resize(client.updateSize);
 client.display();
