@@ -3,13 +3,10 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
-
-# THANKS
-
-    <name>
+    Sochka Oleksandr -- lead programmer -- sasha.sochka@gmail.com
+    Yaroslav Bogdanovich -- game author and ideologist
 
 # TECHNOLOGY COLOPHON
 
     HTML5, CSS3
-    Normalize.css, jQuery, Modernizr
+    Normalize.css, jQuery, Modernizr, KineticJS
