@@ -253,6 +253,11 @@ window.addEventListener("orientationchange", client.updateSize, false);
 $(window).resize(client.updateSize);
 client.display();
 
+if (location.hash === '#two_players') {
+  $('#playWithBotCheckbox').attr('checked', true);
+}
+
+
 $('#playWithBotCheckbox').change(function () {
   if (location.hash === '#two_players') {
     location.hash = '';
