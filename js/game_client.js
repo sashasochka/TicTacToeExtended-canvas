@@ -72,6 +72,7 @@ Client.Cell = function (client, coord) {
   Kinetic.Rect.call(this, rectSettings);
   this.on('click tap', function () {
     var player = client.gameEngine.currentPlayer;
+
     if (client.gameEngine.makeTurn(coord)) {
       if (player === 1) {
         var crossMainDiagonalLine = new Kinetic.Line({
@@ -116,6 +117,10 @@ Client.Cell = function (client, coord) {
         $('#notification').html('Winner: ' + client.gameEngine.winner());
       } else {
         $('#notification').html('Move of player: ' + client.gameEngine.currentPlayer);
+
+        if (client.gameEngine.currentPlayer === 2 && location.hash !== '#two_players') {
+          client.makeBotGeneratedMove();
+        }
       }
     } else {
       $('#notification').html('Invalid move! Player: ' + client.gameEngine.currentPlayer);
@@ -139,9 +144,12 @@ Client.prototype.addBackground = function () {
 
 Client.prototype.addCells = function () {
   // add the shape to the layer
+  this.cells = [];
   for (var y = 0; y < this.gameEngine.size; ++y) {
+    this.cells[y] = [];
     for (var x = 0; x < this.gameEngine.size; ++x) {
-      this.layer.add(new Client.Cell(this,  {y: y,  x : x}));
+      this.cells[y][x] = new Client.Cell(this,  {y: y,  x : x});
+      this.layer.add(this.cells[y][x]);
     }
   }
 };
@@ -202,6 +210,28 @@ Client.prototype.updateSize = function() {
   client.display();
 };
 
+Client.prototype.makeBotGeneratedMove = function () {
+  var nMaxConsequentFails = 1000,
+    consequentFails = 0;
+  while (consequentFails < nMaxConsequentFails) {
+    var tryCoord = {
+      x: randRange(client.gameEngine.size),
+      y: randRange(client.gameEngine.size)
+    };
+    if (client.gameEngine.isAllowedMove(tryCoord)) {
+      client.cells[tryCoord.y][tryCoord.x].fire('click');
+      break;
+    } else {
+      ++consequentFails;
+    }
+  }
+  if (consequentFails === nMaxConsequentFails) {
+    $('#notification').html('Bug found - computer cannot detect moves.' +
+      ' Report to Oleksandr Sochka personally or via email ' +
+      '&lt;sasha.sochka@gmail.com&gt; or personally');
+  }
+};
+
 Client.prototype.display = function () {
   this.stage.draw();
 };
@@ -222,3 +252,14 @@ client.addSquareGridLines();
 window.addEventListener("orientationchange", client.updateSize, false);
 $(window).resize(client.updateSize);
 client.display();
+
+$('#playWithBotCheckbox').change(function () {
+  if (location.hash === '#two_players') {
+    location.hash = '';
+    if (client.gameEngine.currentPlayer === 2) {
+      client.makeBotGeneratedMove();
+    }
+  } else {
+    location.hash = '#two_players';
+  }
+});
