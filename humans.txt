@@ -9,4 +9,7 @@
 # TECHNOLOGY COLOPHON
 
     HTML5, CSS3
-    Normalize.css, jQuery, Modernizr, KineticJS
+    Normalize.css, jQuery, Modernizr, KineticJS,
+
+    In plans: AngularJS, bower
+    Secondary plans: node.js, npm, Amazon EC2, heroku
