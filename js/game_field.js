@@ -11,12 +11,12 @@ var GameField = function (container, gameEngine, width, height) {
   this.squareStrokeColor = 'gray';
   this.backgroundColor = this.squareStrokeColor;
   this.squareBackgroundColor = 'orange';
-  this.cellColor = 'green';
+  this.cellColor = '#333';
   this.cellStrokeColor = 'black';
   this.firstPlayerColor = 'red';
   this.secondPlayerColor = 'blue';
   this.lastSelectedCellColor = 'yellow';
-  this.selectedSquareStrokeColor = '#633';
+  this.selectedSquareStrokeColor = 'yellow';
 
   // dimensions and geometry
   this.width = width;
