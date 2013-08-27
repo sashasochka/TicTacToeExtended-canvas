@@ -15,7 +15,7 @@ field.endGame(function (result) {
 field.moveExpected(function (event) {
   sendNotification('Move of player: ' + event.player);
 
-  if (field.gameEngine.currentPlayer === 2 && location.hash !== '#two_players') {
+  if (field.gameEngine.currentPlayer === 2 && playWithBotCheckbox.attr('checked')) {
     makeBotGeneratedMove(field);
   }
 });
