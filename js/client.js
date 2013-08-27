@@ -41,7 +41,7 @@ playWithBotCheckbox.change(function () {
   if (location.hash === '#two_players') {
     location.hash = '';
     if (field.gameEngine.currentPlayer === 2) {
-      makeBotGeneratedMove();
+      makeBotGeneratedMove(field);
     }
   } else {
     location.hash = '#two_players';
