@@ -16,6 +16,7 @@ var GameField = function (container, gameEngine, width, height) {
   this.firstPlayerColor = 'red';
   this.secondPlayerColor = 'blue';
   this.lastSelectedCellColor = 'yellow';
+  this.selectedSquareStrokeColor = '#633';
 
   // dimensions and geometry
   this.width = width;
@@ -187,6 +188,16 @@ GameField.Square.prototype.addCells = function () {
       });
     }
   }
+};
+
+GameField.Square.prototype.select = function () {
+  this.square.setStroke(this.field.selectedSquareStrokeColor);
+  this.field.display();
+};
+
+GameField.Square.prototype.unselect = function () {
+  this.square.setStroke(this.field.squareStrokeColor);
+  this.field.display();
 };
 
 GameField.prototype.addBackground = function () {

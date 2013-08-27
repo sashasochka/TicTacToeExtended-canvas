@@ -7,11 +7,15 @@ var field = new GameField('TicTacToeCanvas', game,
 field.setup();
 field.display();
 
+var selectedSquare;
 field.cellClicked(function (cell) {
   var game = field.gameEngine;
   var player = game.currentPlayer;
 
   if (game.makeTurn(cell.coord)) {
+    if (selectedSquare) {
+      field.squares[selectedSquare.y][selectedSquare.x].unselect();
+    }
     if (player === 1) {
       cell.drawCross();
     } else {
@@ -22,6 +26,8 @@ field.cellClicked(function (cell) {
     } else {
       sendNotification('Move of player: ' + game.currentPlayer);
 
+      selectedSquare = game.nextSquare().coord;
+      field.squares[selectedSquare.y][selectedSquare.x].select();
       if (game.currentPlayer === 2 && !playWithBotCheckbox.prop('checked')) {
         setTimeout(function () {
           makeBotGeneratedMove(cell.field);
