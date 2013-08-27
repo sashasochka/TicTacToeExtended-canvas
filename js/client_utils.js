@@ -10,7 +10,7 @@ var sendNotification = function (msg) {
 var newFieldSize = function () {
   var deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width,
     deviceHeight = (window.innerHeight > 0) ? window.innerHeight : screen.height;
-  var result = Math.min(800, Math.min(deviceWidth, deviceHeight) * 7 / 8);
+  var result = Math.min(deviceWidth, deviceHeight) * 7 / 8;
   sendNotification('Size: ' + result + ', width: ' + deviceHeight + ', height: ' + deviceWidth);
   return {
     width: result,
