@@ -35,7 +35,7 @@ field.cellClicked(function (cell) {
       }
     }
   } else {
-    sendNotification('Invalid move! Player: ' + game.player);
+    sendNotification('Invalid move! Player: ' + game.currentPlayer);
   }
 });
 
