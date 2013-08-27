@@ -27,7 +27,7 @@ var makeBotGeneratedMove = function (field) {
       y: randRange(field.gameEngine.size)
     };
     if (field.gameEngine.isAllowedMove(tryCoord)) {
-      field.cells[tryCoord.y][tryCoord.x].fire('click');
+      field.cells[tryCoord.y][tryCoord.x].cell.fire('click');
       break;
     } else {
       ++consequentFails;

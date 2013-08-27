@@ -22,7 +22,7 @@ field.cellClicked(function (cell) {
     } else {
       sendNotification('Move of player: ' + game.currentPlayer);
 
-      if (game.currentPlayer === 2 && playWithBotCheckbox.attr('checked')) {
+      if (game.currentPlayer === 2 && !playWithBotCheckbox.prop('checked')) {
         makeBotGeneratedMove(cell.field);
       }
     }
@@ -47,7 +47,7 @@ if (location.hash === '#two_players') {
 playWithBotCheckbox.change(function () {
   if (location.hash === '#two_players') {
     location.hash = '';
-    if (field.gameEngine.currentPlayer === 2) {
+    if (game.currentPlayer === 2) {
       makeBotGeneratedMove(field);
     }
   } else {
