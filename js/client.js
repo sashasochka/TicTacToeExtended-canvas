@@ -23,7 +23,9 @@ field.cellClicked(function (cell) {
       sendNotification('Move of player: ' + game.currentPlayer);
 
       if (game.currentPlayer === 2 && !playWithBotCheckbox.prop('checked')) {
-        makeBotGeneratedMove(cell.field);
+        setTimeout(function () {
+          makeBotGeneratedMove(cell.field);
+        }, 400);
       }
     }
   } else {
