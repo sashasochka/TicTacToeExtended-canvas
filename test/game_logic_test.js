@@ -12,14 +12,15 @@ gameLogicTest.prototype.testTurnLeadsToSameSquare = function () {
 };
 
 gameLogicTest.prototype.testCell = function () {
-  assertTrue(new TicTacToeGame.Cell().empty());
-  assertFalse(new TicTacToeGame.Cell(1).empty());
-  assertFalse(new TicTacToeGame.Cell(2).empty());
+  var coord = {y: 0, x: 0};
+  assertTrue(new TicTacToeGame.Cell(coord).empty());
+  assertFalse(new TicTacToeGame.Cell(coord, 1).empty());
+  assertFalse(new TicTacToeGame.Cell(coord, 2).empty());
 
-  assertSame(new TicTacToeGame.Cell(1).player, 1);
-  assertSame(new TicTacToeGame.Cell(2).player, 2);
+  assertSame(new TicTacToeGame.Cell(coord, 1).player, 1);
+  assertSame(new TicTacToeGame.Cell(coord, 2).player, 2);
   assertException(function () {
-    new TicTacToeGame.Cell(-1);
+    new TicTacToeGame.Cell(coord, -1);
   }, assert.AssertionError.name);
 };
 

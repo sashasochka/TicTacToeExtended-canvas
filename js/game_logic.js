@@ -7,13 +7,13 @@ var TicTacToeGame = function () {
   this.baseSize = 3;
   this.size = this.baseSize * this.baseSize;
   this.currentPlayer = 1;
-  this.cellOwner = array2dInit(this.size, this.size, function () {
-    return new TicTacToeGame.Cell();
+  this.cellOwner = array2dInit(this.size, this.size, function (coord) {
+    return new TicTacToeGame.Cell(coord);
   });
 
   var tmpOuterThis = this;
   this.squareOwner = array2dInit(this.baseSize, this.baseSize, function (coord) {
-    var result = new TicTacToeGame.Cell();
+    var result = new TicTacToeGame.Cell(coord);
     result.topLeftCellCoord = {
       y: coord.y * tmpOuterThis.baseSize,
       x: coord.x * tmpOuterThis.baseSize
@@ -25,7 +25,9 @@ var TicTacToeGame = function () {
 TicTacToeGame.draw = -1;
 TicTacToeGame.undefinedWinner = 0;
 
-TicTacToeGame.Cell = function (player) {
+TicTacToeGame.Cell = function (coord, player) {
+  assert(coord !== undefined);
+  this.coord = coord;
   this.player = player || TicTacToeGame.undefinedWinner;
   assert(this.player >= 0,
     "Cell should be initialized with player number greater or equal than 0. Value passed: " + player);
