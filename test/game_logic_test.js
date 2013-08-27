@@ -23,14 +23,6 @@ gameLogicTest.prototype.testCell = function () {
   }, assert.AssertionError.name);
 };
 
-gameLogicTest.prototype.testNotStartLeadingToSameSquare = function () {
-  var game = new TicTacToeGame();
-  assertFalse(game.makeTurn({x: 4, y: 4}));
-  assertFalse(game.makeTurn({x: 8, y: 8}));
-  assertFalse(game.makeTurn({x: 0, y: 8}));
-  assertTrue(game.makeTurn({x: 5, y: 3}));
-};
-
 gameLogicTest.prototype.testDependencyOnPreviousMove = function () {
   var game = new TicTacToeGame();
 
