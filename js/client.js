@@ -18,7 +18,7 @@ field.cellClicked(function (cell) {
       cell.drawCircle();
     }
     if (game.winner()) {
-      sendNotification('Winner: ' + game.winner);
+      sendNotification('Winner: ' + game.winner());
     } else {
       sendNotification('Move of player: ' + game.currentPlayer);
 
