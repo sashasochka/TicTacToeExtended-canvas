@@ -43,7 +43,7 @@ TicTacToeGame.prototype.makeTurn = function (coord) {
   }
 
   this.firstMove = false;
-  var squareCoord = this._squareCoordByCell(coord);
+  var squareCoord = this.squareCoordByCell(coord);
 
   // update cell ownership
   this.cellOwner[coord.y][coord.x].player = this.currentPlayer;
@@ -63,7 +63,7 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   assert(0 <= coord.x && coord.x < this.size, "x coordinate in makeTurn fails out of range");
   assert(0 <= coord.y && coord.y < this.size, "y coordinate in makeTurn fails out of range");
   assert(!this.gameFinished(), "Cannot make moves after game is finished!");
-  var squareCoord = this._squareCoordByCell(coord);
+  var squareCoord = this.squareCoordByCell(coord);
   var correctSquareCoord = {
     y: this.previousTurnCoord.y % this.baseSize,
     x: this.previousTurnCoord.x % this.baseSize
@@ -181,12 +181,12 @@ TicTacToeGame.prototype.opponentTo = function (player) {
 };
 
 TicTacToeGame.prototype.turnLeadsToSameSquare = function (coord) {
-  var squareCoord = this._squareCoordByCell(coord);
+  var squareCoord = this.squareCoordByCell(coord);
   return coord.x % this.baseSize === squareCoord.x &&
     coord.y % this.baseSize === squareCoord.y;
 };
 
-TicTacToeGame.prototype._squareCoordByCell = function (coord) {
+TicTacToeGame.prototype.squareCoordByCell = function (coord) {
   return {
     y: Math.floor(coord.y / this.baseSize),
     x: Math.floor(coord.x / this.baseSize)
