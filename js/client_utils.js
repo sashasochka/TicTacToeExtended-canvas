@@ -7,7 +7,6 @@ var sendNotification = function (msg) {
   notificationElement.html(msg);
 };
 
-
 var newFieldSize = function () {
   var deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width,
     deviceHeight = (window.innerHeight > 0) ? window.innerHeight : screen.height;
