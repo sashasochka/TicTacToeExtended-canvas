@@ -26,7 +26,7 @@ TicTacToeGame.draw = -1;
 TicTacToeGame.undefinedWinner = 0;
 
 TicTacToeGame.Cell = function (player) {
-  this.player = player || 0;
+  this.player = player || TicTacToeGame.undefinedWinner;
   assert(this.player >= 0,
     "Cell should be initialized with player number greater or equal than 0. Value passed: " + player);
 };
