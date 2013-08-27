@@ -7,21 +7,28 @@ var field = new GameField('TicTacToeCanvas', game,
 field.setup();
 field.display();
 
+field.cellClicked(function (cell) {
+  var game = field.gameEngine;
+  var player = game.currentPlayer;
 
-field.endGame(function (result) {
-  sendNotification('Winner: ' + result.winner);
-});
+  if (game.makeTurn(cell.coord)) {
+    if (player === 1) {
+      cell.drawCross();
+    } else {
+      cell.drawCircle();
+    }
+    if (game.winner()) {
+      sendNotification('Winner: ' + game.winner);
+    } else {
+      sendNotification('Move of player: ' + game.currentPlayer);
 
-field.moveExpected(function (event) {
-  sendNotification('Move of player: ' + event.player);
-
-  if (field.gameEngine.currentPlayer === 2 && playWithBotCheckbox.attr('checked')) {
-    makeBotGeneratedMove(field);
+      if (game.currentPlayer === 2 && playWithBotCheckbox.attr('checked')) {
+        makeBotGeneratedMove(cell.field);
+      }
+    }
+  } else {
+    sendNotification('Invalid move! Player: ' + game.player);
   }
-});
-
-field.invalidMove(function (event) {
-  sendNotification('Invalid move! Player: ' + event.player);
 });
 
 var updateFieldSize = function () {
