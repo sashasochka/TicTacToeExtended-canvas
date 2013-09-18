@@ -104,31 +104,13 @@ TicTacToeGame.prototype.winner = function () {
   }
 
   // check draw
-  // draw if next player cannot move anymore
-  var row, col;
-  if (!this.firstMove) {
-    var cannotMove = true;
-    var nextSquare = this.nextSquare();
-    for (row = nextSquare.topLeftCellCoord.y;
-         row < nextSquare.topLeftCellCoord.y + this.baseSize; ++row) {
-      for (col = nextSquare.topLeftCellCoord.x;
-           col < nextSquare.topLeftCellCoord.x + this.baseSize; ++col) {
-        if (this.cellOwner[row][col].empty()) {
-          cannotMove = false;
-        }
-      }
-    }
-    if (cannotMove) {
-      return TicTacToeGame.draw;
-    }
-  }
-
   // draw if impossible to win (trivial and non-100% check)
   return this.impossibleToWin() ? TicTacToeGame.draw : TicTacToeGame.undefinedWinner;
 
 };
 
 TicTacToeGame.prototype.impossibleToWin = function () {
+  if (this.turn === this.size * this.size + 1) return true;
   var row, col;
   for (var player = 1; player <= 2; ++player) {
     // horizontal checks
@@ -181,6 +163,9 @@ TicTacToeGame.prototype.nextSquare = function () {
 
   var y = this.previousTurnCoord.y % this.baseSize;
   var x = this.previousTurnCoord.x % this.baseSize;
+  if (this._checkSquareFull({y: y,  x: x})) {
+    return undefined;
+  }
   return this.squareOwner[y][x];
 };
 
@@ -268,6 +253,17 @@ TicTacToeGame.prototype._checkOuterDiagonals = function (player) {
   for (row = 0; row < this.baseSize; ++row) {
     if (this.squareOwner[row][this.baseSize - row - 1].player !== player) {
       return false;
+    }
+  }
+  return true;
+};
+
+TicTacToeGame.prototype._checkSquareFull = function (SquareCoord) {
+  for (var row = SquareCoord.y * this.baseSize; row < (SquareCoord.y + 1) * this.baseSize; ++row) {
+    for (var col = SquareCoord.x * this.baseSize; col < (SquareCoord.x + 1) * this.baseSize; ++col) {
+      if (this.cellOwner[row][col].empty()) {
+        return false;
+      }
     }
   }
   return true;

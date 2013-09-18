@@ -15,6 +15,7 @@ field.cellClicked(function (cell) {
   if (game.makeTurn(cell.coord)) {
     if (selectedSquare) {
       field.squares[selectedSquare.y][selectedSquare.x].unselect();
+      selectedSquare = undefined;
     }
     if (player === 1) {
       cell.drawCross();
@@ -25,12 +26,14 @@ field.cellClicked(function (cell) {
       sendNotification('Winner: ' + game.winner());
     } else {
       sendNotification('Move of player: ' + game.currentPlayer);
-
-      selectedSquare = game.nextSquare().coord;
-      field.squares[selectedSquare.y][selectedSquare.x].select();
+      var nextSquare = game.nextSquare();
+      if (nextSquare) {
+        selectedSquare = nextSquare.coord;
+        field.squares[selectedSquare.y][selectedSquare.x].select();
+      }
       if (game.currentPlayer === 2 && !playWithBotCheckbox.prop('checked')) {
         setTimeout(function () {
-          makeBotGeneratedMove(cell.field);
+           makeBotGeneratedMove(cell.field);
         }, 400);
       }
     }
