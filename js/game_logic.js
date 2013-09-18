@@ -2,7 +2,7 @@
 
 
 var TicTacToeGame = function () {
-  this.firstMove = true;
+  this.turn = 1;
   this.previousTurnCoord = {y: -1, x: -1};
   this.baseSize = 3;
   this.size = this.baseSize * this.baseSize;
@@ -44,7 +44,6 @@ TicTacToeGame.prototype.makeTurn = function (coord) {
     return false;
   }
 
-  this.firstMove = false;
   var squareCoord = this.squareCoordByCell(coord);
 
   // update cell ownership
@@ -57,7 +56,12 @@ TicTacToeGame.prototype.makeTurn = function (coord) {
   // 2 becomes 1 and 1 becomes 2
   this.currentPlayer = this.opponentTo(this.currentPlayer);
   this.previousTurnCoord = {x: coord.x, y: coord.y};
+  this.turn++;
   return true;
+};
+
+TicTacToeGame.prototype.isFirstMove = function () {
+  return this.turn === 1;
 };
 
 TicTacToeGame.prototype.isAllowedMove = function (coord) {
@@ -78,12 +82,13 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   }
 
   //  // cannot put in (a, a) point in the first move by rules
-  //  if (this.firstMove && this.turnLeadsToSameSquare(coord)) {
+  //  if (this.isFirstMove() && this.turnLeadsToSameSquare(coord)) {
   //    return false;
   //  }
 
   // should put a mark only in the big square defined by the previous opponent move
-  return this.firstMove || isSameCoord(correctSquareCoord, squareCoord);
+  return this.isFirstMove() ||  this._checkSquareFull(correctSquareCoord) ||
+    isSameCoord(correctSquareCoord, squareCoord);
 };
 
 TicTacToeGame.prototype.gameFinished = function () {
@@ -172,7 +177,8 @@ TicTacToeGame.prototype.impossibleToWin = function () {
 };
 
 TicTacToeGame.prototype.nextSquare = function () {
-  assert(!this.firstMove, "Undefined on first move!");
+  if (this.isFirstMove()) return undefined;
+
   var y = this.previousTurnCoord.y % this.baseSize;
   var x = this.previousTurnCoord.x % this.baseSize;
   return this.squareOwner[y][x];
@@ -201,16 +207,16 @@ TicTacToeGame.prototype._updateSquareOwnership = function (squareCoord, player) 
   }
   var playerOwnsSquare = false;
   for (var row = 0; row < this.baseSize; ++row) {
-    if (this._checkInSquareRow(squareCoord, row, player)) {
+    if (this._checkInnerRow(squareCoord, row, player)) {
       playerOwnsSquare = true;
     }
   }
   for (var col = 0; col < this.baseSize; ++col) {
-    if (this._checkInSquareCol(squareCoord, col, player)) {
+    if (this._checkInnerCol(squareCoord, col, player)) {
       playerOwnsSquare = true;
     }
   }
-  if (this._checkInSquareDiagonals(squareCoord, player)) {
+  if (this._checkInnerDiagonals(squareCoord, player)) {
     playerOwnsSquare = true;
   }
   if (playerOwnsSquare) {
@@ -220,14 +226,14 @@ TicTacToeGame.prototype._updateSquareOwnership = function (squareCoord, player) 
 
 TicTacToeGame.prototype._checkWinner = function (player) {
   for (var i = 0; i < this.baseSize; ++i) {
-    if (this._checkSquareRow(i, player) || this._checkSquareCol(i, player)) {
+    if (this._checkOuterRow(i, player) || this._checkOuterCol(i, player)) {
       return true;
     }
   }
-  return this._checkSquareDiagonals(player);
+  return this._checkOuterDiagonals(player);
 };
 
-TicTacToeGame.prototype._checkSquareRow = function (row, player) {
+TicTacToeGame.prototype._checkOuterRow = function (row, player) {
   for (var col = 0; col < this.baseSize; ++col) {
     if (this.squareOwner[row][col].player !== player) {
       return false;
@@ -236,7 +242,7 @@ TicTacToeGame.prototype._checkSquareRow = function (row, player) {
   return true;
 };
 
-TicTacToeGame.prototype._checkSquareCol = function (col, player) {
+TicTacToeGame.prototype._checkOuterCol = function (col, player) {
   for (var row = 0; row < this.baseSize; ++row) {
     if (this.squareOwner[row][col].player !== player) {
       return false;
@@ -245,7 +251,7 @@ TicTacToeGame.prototype._checkSquareCol = function (col, player) {
   return true;
 };
 
-TicTacToeGame.prototype._checkSquareDiagonals = function (player) {
+TicTacToeGame.prototype._checkOuterDiagonals = function (player) {
   // _check main diagonal
   var mainDiagonal = true;
   for (var row = 0; row < this.baseSize; ++row) {
@@ -267,7 +273,7 @@ TicTacToeGame.prototype._checkSquareDiagonals = function (player) {
   return true;
 };
 
-TicTacToeGame.prototype._checkInSquareRow = function (SquareCoord, innerRow, currentPlayer) {
+TicTacToeGame.prototype._checkInnerRow = function (SquareCoord, innerRow, currentPlayer) {
   var colStart = this.baseSize * SquareCoord.x;
   var row = this.baseSize * SquareCoord.y + innerRow;
   for (var col = colStart; col < colStart + this.baseSize; ++col) {
@@ -278,7 +284,7 @@ TicTacToeGame.prototype._checkInSquareRow = function (SquareCoord, innerRow, cur
   return true;
 };
 
-TicTacToeGame.prototype._checkInSquareCol = function (SquareCoord, innerCol, currentPlayer) {
+TicTacToeGame.prototype._checkInnerCol = function (SquareCoord, innerCol, currentPlayer) {
   var rowStart = this.baseSize * SquareCoord.y;
   var col = this.baseSize * SquareCoord.x + innerCol;
   for (var row = rowStart; row < rowStart + this.baseSize; ++row) {
@@ -289,7 +295,7 @@ TicTacToeGame.prototype._checkInSquareCol = function (SquareCoord, innerCol, cur
   return true;
 };
 
-TicTacToeGame.prototype._checkInSquareDiagonals = function (SquareCoord, currentPlayer) {
+TicTacToeGame.prototype._checkInnerDiagonals = function (SquareCoord, currentPlayer) {
   // _check main diagonal
   var mainDiagonal = true;
   var baseX = SquareCoord.x * this.baseSize;

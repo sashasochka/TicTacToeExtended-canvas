@@ -28,7 +28,7 @@ gameLogicTest.prototype.testDependencyOnPreviousMove = function () {
   var game = new TicTacToeGame();
 
   assertTrue(game.makeTurn({x: 0, y: 5}));
-  assertFalse(game.firstMove);
+  assertFalse(game.isFirstMove());
   assertSame(game.previousTurnCoord.x , 0);
   assertSame(game.previousTurnCoord.y , 5);
 
@@ -96,7 +96,7 @@ gameLogicTest.prototype.testGameFinishable = function () {
       consequentFails = 0;
     while (!game.winner() && moves < maxMoves && consequentFails < nMaxConsequentFails) {
       var tryCoord;
-      if (!game.firstMove) {
+      if (!game.isFirstMove()) {
         tryCoord = {
           x: randRange(game.baseSize) + game.nextSquare().topLeftCellCoord.x,
           y: randRange(game.baseSize) + game.nextSquare().topLeftCellCoord.y
