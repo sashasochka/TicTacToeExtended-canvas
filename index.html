@@ -5,14 +5,23 @@
     <title>Tic-Tac-Toe Extended</title>
     <meta name="description" content="Extended version of Tic-Tac-Toe game on 9x9 board and additional rules">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="css/normalize.css">
+    <!-- No need - already used in bootstrap -->
+    <!--<link rel="stylesheet" href="css/normalize.css">-->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/boilerplate.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
   </head>
   <body>
     <div id="notification"></div>
-    <input id="playWithBotCheckbox" type="checkbox"> <label for="playWithBotCheckbox"> Control 2nd player manually</label>
+    <div class="control-group">
+      <div class="controls">
+        <button class="btn btn-success" type="submit" id="restart-btn">Restart</button>
+        <!--<button class="btn btn-danger">Another button</button>-->
+        <label><input id="playWithBotCheckbox" type="checkbox"> Control 2nd player manually</label>
+      </div>
+    </div>
+    <br>
     <div id="TicTacToeCanvas"></div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
