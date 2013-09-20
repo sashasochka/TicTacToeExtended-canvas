@@ -10,6 +10,7 @@ var startGame = function () {
   field = new GameField('TicTacToeCanvas', game,
     fieldSize.width, fieldSize.height);
   field.setup();
+  updateFieldSize();
   field.display();
   field.cellClicked(function (cell) {
     var game = field.gameEngine;
@@ -24,6 +25,11 @@ var startGame = function () {
         cell.drawCross();
       } else {
         cell.drawCircle();
+      }
+      var previousSquareCoord = game.squareCoordByCell(game.previousTurnCoord);
+      var owner = game.squareOwner[previousSquareCoord.y][previousSquareCoord.x].player;
+      if (owner != TicTacToeGame.undefinedWinner) {
+        field.squares[previousSquareCoord.y][previousSquareCoord.x].setOwnerBackground(owner);
       }
       if (game.winner()) {
         sendNotification('Winner: ' + game.winner());

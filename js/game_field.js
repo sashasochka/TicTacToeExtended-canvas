@@ -17,6 +17,8 @@ var GameField = function (container, gameEngine, width, height) {
   this.secondPlayerColor = 'blue';
   this.lastSelectedCellColor = 'yellow';
   this.selectedSquareStrokeColor = 'yellow';
+  this.firstPlayerSquareBackgroundColor = 'brown';
+  this.secondPlayerSquareBackgroundColor = 'lightblue';
 
   // dimensions and geometry
   this.width = width;
@@ -138,6 +140,10 @@ GameField.Cell.prototype.drawCross = function () {
   this.field.display();
 };
 
+GameField.Cell.prototype.setBackground = function (color) {
+    this.cell.setFill(color);
+};
+
 GameField.Cell.prototype.drawCircle = function () {
   var circle = new Kinetic.Circle({
     x: this.rectSettings.width / 2,
@@ -185,9 +191,21 @@ GameField.Square.prototype.addCells = function () {
       }, {
         y: y,
         x: x
-      });
+      }); 
     }
   }
+};
+
+GameField.Square.prototype.setOwnerBackground = function (owner) {
+  for (var row = 0; row < this.field.gameEngine.baseSize; ++row) {
+    for (var col = 0; col < this.field.gameEngine.baseSize; ++col) {
+      var y = this.coord.y * this.field.gameEngine.baseSize + row;
+      var x = this.coord.x * this.field.gameEngine.baseSize + col;
+      var color = field[(owner === 1) ? 'firstPlayerSquareBackgroundColor' : 'secondPlayerSquareBackgroundColor'];
+      this.field.cells[y][x].setBackground(color);
+    }
+  }
+  this.field.display();
 };
 
 GameField.Square.prototype.select = function () {
