@@ -1,11 +1,12 @@
 "use strict";
 
-var fieldSize = newFieldSize();
+var fieldSize;
 var game;
 var field;
 var selectedSquare;
 
 var startGame = function () {
+  fieldSize = newFieldSize()
   game = new TicTacToeGame();
   field = new GameField('TicTacToeCanvas', game,
     fieldSize.width, fieldSize.height);
