@@ -70,10 +70,9 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   assert(0 <= coord.y && coord.y < this.size, "y coordinate in makeTurn fails out of range");
   assert(!this.gameFinished(), "Cannot make moves after game is finished!");
   var squareCoord = this.squareCoordByCell(coord);
-  var correctSquareCoord = {
-    y: this.previousTurnCoord.y % this.baseSize,
-    x: this.previousTurnCoord.x % this.baseSize
-  };
+  var nxtSquare = this.nextSquare();
+  var correctSquareCoord = (nxtSquare ? nxtSquare.coord : undefined);
+
 
   // Additional checks if move is invalid
   // cannot put to already filled cell
@@ -87,8 +86,7 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   //  }
 
   // should put a mark only in the big square defined by the previous opponent move
-  return this.isFirstMove() ||  this._checkSquareFull(correctSquareCoord) ||
-    isSameCoord(correctSquareCoord, squareCoord);
+  return correctSquareCoord === undefined || isSameCoord(correctSquareCoord, squareCoord);
 };
 
 TicTacToeGame.prototype.gameFinished = function () {
@@ -163,9 +161,11 @@ TicTacToeGame.prototype.nextSquare = function () {
 
   var y = this.previousTurnCoord.y % this.baseSize;
   var x = this.previousTurnCoord.x % this.baseSize;
-  if (this._checkSquareFull({y: y,  x: x})) {
+  if (this.squareOwner[y][x].player !== TicTacToeGame.undefinedWinner ||
+      this._checkSquareFull({y: y,  x: x})) {
     return undefined;
   }
+
   return this.squareOwner[y][x];
 };
 
