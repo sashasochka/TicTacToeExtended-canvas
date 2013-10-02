@@ -17,8 +17,8 @@ gameLogicTest.prototype.testCell = function () {
   assertFalse(new TicTacToeGame.Cell(coord, 1).empty());
   assertFalse(new TicTacToeGame.Cell(coord, 2).empty());
 
-  assertSame(new TicTacToeGame.Cell(coord, 1).player, 1);
-  assertSame(new TicTacToeGame.Cell(coord, 2).player, 2);
+  assertSame(new TicTacToeGame.Cell(coord, 1).owner, 1);
+  assertSame(new TicTacToeGame.Cell(coord, 2).owner, 2);
   assertException(function () {
     new TicTacToeGame.Cell(coord, -1);
   }, assert.AssertionError.name);
@@ -50,15 +50,13 @@ gameLogicTest.prototype.testMoveSameCell = function () {
 
 gameLogicTest.prototype.testSquareTopLeftCellCoord = function () {
   var game = new TicTacToeGame();
-  assertSame(game.squareOwner[1][2].topLeftCellCoord.x, 6);
-  assertSame(game.squareOwner[1][2].topLeftCellCoord.y, 3);
+  assertSame(game.square[1][2].topLeftCellCoord.x, 6);
+  assertSame(game.square[1][2].topLeftCellCoord.y, 3);
 };
 
 gameLogicTest.prototype.testNextSquare = function () {
   var game = new TicTacToeGame();
-  assertException(function () {
-    game.nextSquare();
-  }, assert.AssertionError.name);
+  assertUndefined(game.nextSquare());
   game.makeTurn({y: 0, x: 1});
 
   assertSame(game.nextSquare().topLeftCellCoord.y, 0);
@@ -80,8 +78,8 @@ gameLogicTest.prototype.testGameCutEarlierByDraw = function () {
     secondPlayerSquares = [[1, 0], [0, 1], [0, 2], [2, 2]];
   for (var i = 0; i < firstPlayerSquares.length; ++i) {
     assertFalse(game.impossibleToWin());
-    game.squareOwner[firstPlayerSquares[i][1]][firstPlayerSquares[i][0]].player = 1;
-    game.squareOwner[secondPlayerSquares[i][1]][secondPlayerSquares[i][0]].player = 2;
+    game.square[firstPlayerSquares[i][1]][firstPlayerSquares[i][0]].owner = 1;
+    game.square[secondPlayerSquares[i][1]][secondPlayerSquares[i][0]].owner = 2;
   }
   assertTrue(game.impossibleToWin());
 };
@@ -95,18 +93,10 @@ gameLogicTest.prototype.testGameFinishable = function () {
       moves = 0,
       consequentFails = 0;
     while (!game.winner() && moves < maxMoves && consequentFails < nMaxConsequentFails) {
-      var tryCoord;
-      if (!game.isFirstMove()) {
-        tryCoord = {
-          x: randRange(game.baseSize) + game.nextSquare().topLeftCellCoord.x,
-          y: randRange(game.baseSize) + game.nextSquare().topLeftCellCoord.y
-        };
-      } else {
-        tryCoord = {
+      var tryCoord = {
           x: randRange(game.size),
           y: randRange(game.size)
-        };
-      }
+      };
       if (game.makeTurn(tryCoord)) {
         ++moves;
         consequentFails = 0;
@@ -114,9 +104,9 @@ gameLogicTest.prototype.testGameFinishable = function () {
         ++consequentFails;
       }
     }
-    // assertNotSame('Game is stuck!', game.winner(), TicTacToeGame.undefinedWinner);
-    // assertTrue(moves >= 17);
-    // console.log(moves +' moves; Winner: ' + game.winner());
+    assertNotSame('Game is stuck!', game.winner(), TicTacToeGame.undefinedWinner);
+    assertTrue(moves >= 17);
+    console.log(moves +' moves; Winner: ' + game.winner());
   }
 };
 
@@ -134,6 +124,6 @@ gameLogicTest.prototype.testSquareIsFilled = function () {
     }
   }
   assertTrue(game._checkSquareFull({y: 0, x: 0}));
-  assertTrue(game._checkSquareFull({y: 0, x: 1}));
+  assertFalse(game._checkSquareFull({y: 0, x: 1}));
   assertTrue(game.makeTurn({y: 8, x: 8}));
 };
