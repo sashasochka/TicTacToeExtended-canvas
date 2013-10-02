@@ -28,7 +28,7 @@ var startGame = function () {
         cell.drawCircle();
       }
       var previousSquareCoord = game.squareCoordByCell(game.previousTurnCoord);
-      var owner = game.squareOwner[previousSquareCoord.y][previousSquareCoord.x].player;
+      var owner = game.square[previousSquareCoord.y][previousSquareCoord.x].owner;
       if (owner != TicTacToeGame.undefinedWinner) {
         field.squares[previousSquareCoord.y][previousSquareCoord.x].setOwnerBackground(owner);
       }
