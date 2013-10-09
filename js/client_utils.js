@@ -20,13 +20,16 @@ var newFieldSize = function () {
 
 var makeBotGeneratedMove = function (field) {
   var nMaxConsequentFails = 1000,
+    nMaxCleverTryFails = 900,
     consequentFails = 0;
   while (consequentFails < nMaxConsequentFails) {
     var tryCoord = {
       x: randRange(field.gameEngine.size),
       y: randRange(field.gameEngine.size)
     };
-    if (field.gameEngine.isAllowedMove(tryCoord)) {
+    var squareCoord = field.gameEngine.squareCoordByCell(tryCoord);
+    var isStupidMove = !field.gameEngine.square[squareCoord.y][squareCoord.x].empty();
+    if (field.gameEngine.isAllowedMove(tryCoord) && (!isStupidMove || consequentFails > nMaxCleverTryFails)) {
       field.cells[tryCoord.y][tryCoord.x].cell.fire('click');
       break;
     } else {
