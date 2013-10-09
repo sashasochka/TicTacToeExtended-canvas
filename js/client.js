@@ -29,7 +29,7 @@ var startGame = function () {
       }
       var previousSquareCoord = game.squareCoordByCell(game.previousTurnCoord);
       var owner = game.square[previousSquareCoord.y][previousSquareCoord.x].owner;
-      if (owner != TicTacToeGame.undefinedWinner) {
+      if (owner !== TicTacToeGame.undefinedWinner) {
         field.squares[previousSquareCoord.y][previousSquareCoord.x].setOwnerBackground(owner);
       }
       if (game.winner()) {
