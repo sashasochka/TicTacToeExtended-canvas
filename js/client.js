@@ -33,7 +33,13 @@ var startGame = function () {
         field.squares[previousSquareCoord.y][previousSquareCoord.x].setOwnerBackground(owner);
       }
       if (game.winner()) {
-        sendNotification('Winner: ' + game.winner());
+        var winner = game.winner();
+        if (winner !== TicTacToeGame.draw) {
+          sendNotification('Winner: Player ' + winner);
+        } else {
+          sendNotification('Winner: Draw!');
+        }
+
       } else {
         sendNotification('Move of player: ' + game.currentPlayer);
         var nextSquare = game.nextSquare();
