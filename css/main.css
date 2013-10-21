@@ -8,3 +8,7 @@ body {
     height: 100%;
 }
 
+.control-group {
+    margin-bottom: 10px;
+}
+
