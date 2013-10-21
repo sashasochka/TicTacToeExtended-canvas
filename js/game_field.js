@@ -191,7 +191,7 @@ GameField.Square.prototype.addCells = function () {
       }, {
         y: y,
         x: x
-      }); 
+      });
     }
   }
 };
