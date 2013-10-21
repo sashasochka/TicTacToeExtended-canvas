@@ -1,7 +1,6 @@
 "use strict";
 
-var playWithBotCheckbox = $('#playWithBotCheckbox'),
-  notificationElement = $('#notification');
+var notificationElement = $('#notification');
 
 var sendNotification = function (msg) {
   notificationElement.html(msg);
