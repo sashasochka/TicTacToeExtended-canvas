@@ -63,27 +63,23 @@ var updateFieldSize = function () {
   field.updateSize(newFieldSize());
 };
 
-// update field size if needed
-$(window).resize(updateFieldSize);
-window.addEventListener("orientationchange", updateFieldSize, false);
-
-// checkbox and hash value controlling User vs Bot or User vs User
-if (location.hash === '#two_players') {
-  playWithBotCheckbox.attr('checked', true);
-}
-
-playWithBotCheckbox.change(function () {
-  if (location.hash === '#two_players') {
-    location.hash = '';
-    if (game.currentPlayer === 2) {
+function ControlsCtrl($scope) {
+  $scope.restart = function () {
+    startGame();
+  }
+  $scope.toggleOpponent = function() {
+    if (!opponentIsHuman && game.currentPlayer === 2) {
       makeBotGeneratedMove(field);
     }
-  } else {
-    location.hash = '#two_players';
+    opponentIsHuman = !opponentIsHuman;
   }
-});
+}
 
-$('#restart-btn').click(function () {
-  startGame();
-});
-startGame();
+function PageCtrl($scope, $window) {
+  $scope.init = function () {
+    startGame()
+  }
+  angular.element($window).bind('resize', updateFieldSize);
+  angular.element($window).bind('orientationchange', updateFieldSize);
+}
+

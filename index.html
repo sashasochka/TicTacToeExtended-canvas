@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
   <head>
     <meta charset="utf-8">
     <title>Tic-Tac-Toe Extended</title>
@@ -12,19 +12,29 @@
     <link rel="stylesheet" href="css/main.css">
     <script src="js/vendor/modernizr-2.6.2.min.js"></script>
   </head>
-  <body>
+  <body ng-controller="PageCtrl" ng-init="init()">
+
     <div id="notification"></div>
-    <div class="control-group">
+
+    <div class="control-group" ng-controller="ControlsCtrl">
       <div class="controls">
-        <button class="btn btn-success" type="submit" id="restart-btn">Restart</button>
-        <!--<button class="btn btn-danger">Another button</button>-->
-        <label><input id="playWithBotCheckbox" type="checkbox"> Control 2nd player manually</label>
+        <button class="btn btn-success" type="submit" id="restart-btn" ng-click="restart()">
+          Restart
+        </button>
+        <label>
+          <input type="checkbox" ng-click="toggleOpponent()">
+          Control 2nd player manually
+        </label>
       </div>
     </div>
-    <div id="TicTacToeCanvas"></div>
+
+    <div id="TicTacToeCanvas">
+
+    </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-2.0.3.min.js"><\/script>')</script>
+    <script src="js/vendor/angular.min.js"></script>
     <script src="js/vendor/kinetic.min.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/game_logic.js"></script>
