@@ -253,7 +253,7 @@ GameField.prototype.addSquares = function () {
   }
 };
 
-GameField.prototype.updateSize = function (newSize) {
+GameField.prototype.resize = function (newSize) {
   this.scaleRatio = {
     y: newSize.height / this.height,
     x: newSize.width / this.width

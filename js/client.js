@@ -60,7 +60,7 @@ var startGame = function () {
 };
 
 var updateFieldSize = function () {
-  field.updateSize(newFieldSize());
+  field.resize(newFieldSize());
 };
 
 function ControlsCtrl($scope) {
