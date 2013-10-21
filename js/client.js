@@ -5,6 +5,8 @@ var game;
 var field;
 var selectedSquare;
 
+var opponentIsHuman = true;
+
 var startGame = function () {
   fieldSize = newFieldSize()
   game = new TicTacToeGame();
@@ -47,10 +49,8 @@ var startGame = function () {
           selectedSquare = nextSquare.coord;
           field.squares[selectedSquare.y][selectedSquare.x].select();
         }
-        if (game.currentPlayer === 2 && !playWithBotCheckbox.prop('checked')) {
-          setTimeout(function () {
-             makeBotGeneratedMove(cell.field);
-          }, 400);
+        if (game.currentPlayer === 2 && opponentIsHuman) {
+          makeBotGeneratedMoveWithDelay(cell.field, 400);
         }
       }
     } else {

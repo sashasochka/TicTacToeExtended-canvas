@@ -42,3 +42,9 @@ var makeBotGeneratedMove = function (field) {
       '&lt;<a href="mailto:sasha.sochka@gmail.com">sasha.sochka@gmail.com</a>&gt;');
   }
 };
+
+var makeBotGeneratedMoveWithDelay = function (field, delay) {
+  setTimeout(function () {
+    makeBotGeneratedMove(field);
+  }, delay);
+}
