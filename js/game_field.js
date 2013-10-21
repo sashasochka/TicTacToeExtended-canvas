@@ -3,7 +3,7 @@
 console.assert(typeof TicTacToeGame !== 'undefined');
 
 
-var GameField = function (container, gameEngine, width, height) {
+var GameField = function (container, gameEngine, size) {
   this.container = container;
   this.gameEngine = gameEngine;
 
@@ -21,8 +21,8 @@ var GameField = function (container, gameEngine, width, height) {
   this.secondPlayerSquareBackgroundColor = 'lightblue';
 
   // dimensions and geometry
-  this.width = width;
-  this.height = height || this.width;
+  this.width = size.width;
+  this.height = size.height;
   this.scaleRatio = {
     y: 1,
     x: 1
