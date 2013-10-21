@@ -17,7 +17,7 @@ var newFieldSize = function () {
   };
 };
 
-var makeBotGeneratedMove = function (field) {
+var botGeneratedMove = function (field) {
   var nMaxConsequentFails = 1000,
     nMaxCleverTryFails = 900,
     consequentFails = 0;
@@ -29,8 +29,7 @@ var makeBotGeneratedMove = function (field) {
     var squareCoord = field.gameEngine.squareCoordByCell(tryCoord);
     var isStupidMove = !field.gameEngine.square[squareCoord.y][squareCoord.x].empty();
     if (field.gameEngine.isAllowedMove(tryCoord) && (!isStupidMove || consequentFails > nMaxCleverTryFails)) {
-      field.cells[tryCoord.y][tryCoord.x].cell.fire('click');
-      break;
+      return tryCoord;
     } else {
       ++consequentFails;
     }
@@ -44,6 +43,7 @@ var makeBotGeneratedMove = function (field) {
 
 var makeBotGeneratedMoveWithDelay = function (field, delay) {
   setTimeout(function () {
-    makeBotGeneratedMove(field);
+    var moveCoord = botGeneratedMove(field);
+    makeMoveTo(moveCoord);
   }, delay);
 }

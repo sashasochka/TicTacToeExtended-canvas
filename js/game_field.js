@@ -104,7 +104,7 @@ GameField.Cell = function (square, innerCoord, outerCoord) {
   this.cell = new Kinetic.Rect(this.rectSettings);
   var outerScopeThis = this;
   this.cell.on('click tap', function () {
-    outerScopeThis.field.raiseCellClicked(outerScopeThis);
+    outerScopeThis.field.raiseCellClicked(outerScopeThis.coord);
   });
   this.group.add(this.cell);
   square.group.add(this.group);
