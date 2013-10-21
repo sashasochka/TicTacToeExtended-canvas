@@ -17,33 +17,25 @@ var newFieldSize = function () {
   };
 };
 
-var botGeneratedMove = function (field) {
-  var nMaxConsequentFails = 1000,
-    nMaxCleverTryFails = 900,
-    consequentFails = 0;
-  while (consequentFails < nMaxConsequentFails) {
-    var tryCoord = {
-      x: randRange(field.gameEngine.size),
-      y: randRange(field.gameEngine.size)
-    };
-    var squareCoord = field.gameEngine.squareCoordByCell(tryCoord);
-    var isStupidMove = !field.gameEngine.square[squareCoord.y][squareCoord.x].empty();
-    if (field.gameEngine.isAllowedMove(tryCoord) && (!isStupidMove || consequentFails > nMaxCleverTryFails)) {
-      return tryCoord;
+var bot = new SimpleBot();
+
+var botGeneratedMove = function () {
+  try {
+    return bot.getMove(game);
+  } catch (e) {
+    if (e instanceof String) {
+      sendNotification('Exception in bot ' + bot.name + '\n' +
+        'Report to project maintainer personally or via email ' +
+        '&lt;<a href="mailto:sasha.sochka@gmail.com">sasha.sochka@gmail.com</a>&gt;');
     } else {
-      ++consequentFails;
+      throw e;
     }
-  }
-  if (consequentFails === nMaxConsequentFails) {
-    sendNotification('Bug found - computer cannot detect moves.' +
-      ' Report to Oleksandr Sochka personally or via email ' +
-      '&lt;<a href="mailto:sasha.sochka@gmail.com">sasha.sochka@gmail.com</a>&gt;');
   }
 };
 
-var makeBotGeneratedMoveWithDelay = function (field, delay) {
+var makeBotGeneratedMoveWithDelay = function (delay) {
   setTimeout(function () {
-    var moveCoord = botGeneratedMove(field);
+    var moveCoord = botGeneratedMove();
     makeMoveTo(moveCoord);
   }, delay);
-}
+};

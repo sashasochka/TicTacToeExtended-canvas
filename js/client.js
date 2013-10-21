@@ -58,7 +58,7 @@ var updateFieldOnMoveTo = function (cellCoord) {
       field.squares[selectedSquare.y][selectedSquare.x].select();
     }
     if (game.currentPlayer === 2 && opponentIsHuman) {
-      makeBotGeneratedMoveWithDelay(cell.field, 400);
+      makeBotGeneratedMoveWithDelay(400);
     }
   }
 };
