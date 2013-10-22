@@ -3,7 +3,7 @@
 console.assert(typeof TicTacToeGame !== 'undefined');
 
 
-var GameField = function (container, gameEngine, size) {
+var GameCanvas = function (container, gameEngine, size) {
   this.container = container;
   this.gameEngine = gameEngine;
 
@@ -78,10 +78,10 @@ var GameField = function (container, gameEngine, size) {
 };
 
 // constants
-GameField.horizontal = 0;
-GameField.vertical = 1;
+GameCanvas.horizontal = 0;
+GameCanvas.vertical = 1;
 
-GameField.Cell = function (square, innerCoord, outerCoord) {
+GameCanvas.Cell = function (square, innerCoord, outerCoord) {
   this.square = square;
   this.field = square.field;
   this.coord = outerCoord;
@@ -110,7 +110,7 @@ GameField.Cell = function (square, innerCoord, outerCoord) {
   square.group.add(this.group);
 };
 
-GameField.Cell.prototype.drawCross = function () {
+GameCanvas.Cell.prototype.drawCross = function () {
   var crossMainDiagonalLine = new Kinetic.Line({
     points: [
       this.field.crossDiagonalPadding.x,
@@ -140,11 +140,11 @@ GameField.Cell.prototype.drawCross = function () {
   this.field.display();
 };
 
-GameField.Cell.prototype.setBackground = function (color) {
+GameCanvas.Cell.prototype.setBackground = function (color) {
     this.cell.setFill(color);
 };
 
-GameField.Cell.prototype.drawCircle = function () {
+GameCanvas.Cell.prototype.drawCircle = function () {
   var circle = new Kinetic.Circle({
     x: this.rectSettings.width / 2,
     y: this.rectSettings.height / 2,
@@ -156,7 +156,7 @@ GameField.Cell.prototype.drawCircle = function () {
   this.field.display();
 };
 
-GameField.Square = function (field, coord) {
+GameCanvas.Square = function (field, coord) {
   this.field = field;
   this.coord = coord;
   this.groupSettings = {
@@ -180,12 +180,12 @@ GameField.Square = function (field, coord) {
   field.layer.add(this.group);
 };
 
-GameField.Square.prototype.addCells = function () {
+GameCanvas.Square.prototype.addCells = function () {
   for (var row = 0; row < this.field.gameEngine.baseSize; ++row) {
     for (var col = 0; col < this.field.gameEngine.baseSize; ++col) {
       var y = this.coord.y * this.field.gameEngine.baseSize + row;
       var x = this.coord.x * this.field.gameEngine.baseSize + col;
-      this.field.cells[y][x] = new GameField.Cell(this, {
+      this.field.cells[y][x] = new GameCanvas.Cell(this, {
         y: row,
         x: col
       }, {
@@ -196,7 +196,7 @@ GameField.Square.prototype.addCells = function () {
   }
 };
 
-GameField.Square.prototype.setOwnerBackground = function (owner) {
+GameCanvas.Square.prototype.setOwnerBackground = function (owner) {
   for (var row = 0; row < this.field.gameEngine.baseSize; ++row) {
     for (var col = 0; col < this.field.gameEngine.baseSize; ++col) {
       var y = this.coord.y * this.field.gameEngine.baseSize + row;
@@ -208,17 +208,17 @@ GameField.Square.prototype.setOwnerBackground = function (owner) {
   this.field.display();
 };
 
-GameField.Square.prototype.select = function () {
+GameCanvas.Square.prototype.select = function () {
   this.square.setStroke(this.field.selectedSquareStrokeColor);
   this.field.display();
 };
 
-GameField.Square.prototype.unselect = function () {
+GameCanvas.Square.prototype.unselect = function () {
   this.square.setStroke(this.field.squareStrokeColor);
   this.field.display();
 };
 
-GameField.prototype.addBackground = function () {
+GameCanvas.prototype.addBackground = function () {
   this.background = new Kinetic.Rect({
     x: 0,
     y: 0,
@@ -231,7 +231,7 @@ GameField.prototype.addBackground = function () {
   this.layer.add(this.background);
 };
 
-GameField.prototype.addCells = function () {
+GameCanvas.prototype.addCells = function () {
   this.cells = [];
   for (var row = 0; row < this.gameEngine.size; ++row) {
     this.cells[row] = [];
@@ -243,17 +243,17 @@ GameField.prototype.addCells = function () {
   }
 };
 
-GameField.prototype.addSquares = function () {
+GameCanvas.prototype.addSquares = function () {
   this.squares = [];
   for (var y = 0; y < this.gameEngine.baseSize; ++y) {
     this.squares[y] = [];
     for (var x = 0; x < this.gameEngine.baseSize; ++x) {
-      this.squares[y][x] = new GameField.Square(this, {y: y, x: x});
+      this.squares[y][x] = new GameCanvas.Square(this, {y: y, x: x});
     }
   }
 };
 
-GameField.prototype.resize = function (newSize) {
+GameCanvas.prototype.resize = function (newSize) {
   this.scaleRatio = {
     y: newSize.height / this.height,
     x: newSize.width / this.width
@@ -264,23 +264,23 @@ GameField.prototype.resize = function (newSize) {
   this.display();
 };
 
-GameField.prototype.setup = function () {
+GameCanvas.prototype.setup = function () {
   this.addBackground();
   this.addSquares();
   this.addCells();
 };
 
-GameField.prototype.display = function () {
+GameCanvas.prototype.display = function () {
   this.stage.draw();
 };
 
-GameField.prototype._addEvents = function (events) {
+GameCanvas.prototype._addEvents = function (events) {
   for (var index = 0; index < events.length; ++index) {
     this._addEvent(events[index]);
   }
 };
 
-GameField.prototype._addEvent = function (eventName) {
+GameCanvas.prototype._addEvent = function (eventName) {
   var eventsListMemberName = 'on' + eventName.capitalize(),
     raiseFunctionName = 'raise' + eventName.capitalize();
   var callbacks = this[eventsListMemberName] = [];

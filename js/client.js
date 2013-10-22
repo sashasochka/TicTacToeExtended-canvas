@@ -10,7 +10,7 @@ var opponentIsHuman = true;
 var startGame = function () {
   fieldSize = newFieldSize()
   game = new TicTacToeGame();
-  field = new GameField('TicTacToeCanvas', game, fieldSize);
+  field = new GameCanvas('TicTacToeCanvas', game, fieldSize);
   field.setup();
   updateFieldSize();
   field.display();
