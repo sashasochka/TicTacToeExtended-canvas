@@ -110,6 +110,10 @@ GameCanvas.Cell = function (square, innerCoord, outerCoord) {
   square.group.add(this.group);
 };
 
+GameCanvas.Cell.prototype.setBackground = function (color) {
+  this.cell.setFill(color);
+};
+
 GameCanvas.Cell.prototype.drawCross = function () {
   var crossMainDiagonalLine = new Kinetic.Line({
     points: [
@@ -138,10 +142,6 @@ GameCanvas.Cell.prototype.drawCross = function () {
   this.group.add(crossMainDiagonalLine);
   this.group.add(crossAdditionalDiagonalLine);
   this.field.display();
-};
-
-GameCanvas.Cell.prototype.setBackground = function (color) {
-    this.cell.setFill(color);
 };
 
 GameCanvas.Cell.prototype.drawCircle = function () {
