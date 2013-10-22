@@ -42,7 +42,7 @@ var makeMoveTo = function (cellCoord) {
   if (game.makeTurn(cellCoord)) {
     updateCanvasOnMoveTo(cellCoord);
     if (botIntendedToMove()) {
-      _.delay(makeBotGeneratedMove, 400);
+      _.delay(makeBotGeneratedMove, 200);
     }
   } else {
     sendNotification('Invalid move! Player: ' + game.currentPlayer);
