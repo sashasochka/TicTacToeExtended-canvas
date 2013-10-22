@@ -71,7 +71,7 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   assert(!this.gameFinished(), "Cannot make moves after game is finished!");
   var squareCoord = this.squareCoordByCell(coord);
   var nxtSquare = this.nextSquare();
-  var correctSquareCoord = (nxtSquare ? nxtSquare.coord : undefined);
+  var correctSquareCoord = (nxtSquare ? nxtSquare.coord : squareCoord);
 
 
   // Additional checks if move is invalid
@@ -86,7 +86,7 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   //  }
 
   // should put a mark only in the big square defined by the previous opponent move
-  return correctSquareCoord === undefined || isSameCoord(correctSquareCoord, squareCoord);
+  return _.isEqual(correctSquareCoord, squareCoord);
 };
 
 TicTacToeGame.prototype.gameFinished = function () {

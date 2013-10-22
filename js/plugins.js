@@ -31,18 +31,6 @@ var noop = function () {
 
 // helper functions
 
-var randRange = function (begin, end) {
-  var realBegin, realEnd;
-  if (end !== undefined) {
-    realBegin = begin;
-    realEnd = end;
-  } else {
-    realEnd = begin;
-    realBegin = 0;
-  }
-  return Math.floor(Math.random() * (realEnd- realBegin)) + realBegin;
-};
-
 var array2dInit = function (dim1, dim2, fun) {
   var result = [];
   for (var outer = 0; outer < dim1; ++outer) {
@@ -52,10 +40,6 @@ var array2dInit = function (dim1, dim2, fun) {
     }
   }
   return result;
-};
-
-var isSameCoord = function (coord1, coord2) {
-  return coord1.x === coord2.x && coord1.y === coord2.y;
 };
 
 // assertions

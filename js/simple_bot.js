@@ -10,8 +10,8 @@ SimpleBot.prototype.getMove = function (game) {
     consequentFails = 0;
   while (consequentFails < nMaxConsequentFails) {
     var tryCoord = {
-      x: randRange(game.size),
-      y: randRange(game.size)
+      x: _.random(game.size - 1),
+      y: _.random(game.size - 1)
     };
     var squareCoord = game.squareCoordByCell(tryCoord);
     var isStupidMove = !game.square[squareCoord.y][squareCoord.x].empty();

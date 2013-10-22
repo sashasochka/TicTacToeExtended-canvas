@@ -94,8 +94,8 @@ gameLogicTest.prototype.testGameFinishable = function () {
       consequentFails = 0;
     while (!game.winner() && moves < maxMoves && consequentFails < nMaxConsequentFails) {
       var tryCoord = {
-          x: randRange(game.size),
-          y: randRange(game.size)
+          x: _.random(game.size - 1),
+          y: _.random(game.size - 1)
       };
       if (game.makeTurn(tryCoord)) {
         ++moves;
