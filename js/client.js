@@ -7,6 +7,23 @@ var selectedSquare;
 
 var opponentIsHuman = true;
 
+var bot = new SimpleBot();
+
+var botGeneratedMove = function () {
+  try {
+    return bot.getMove(game);
+  } catch (e) {
+    if (_.isString(e)) {
+      var email = 'sasha.sochka@gmail.com';
+      sendNotification('Exception in bot ' + bot.name + ': ' + e + '\n' +
+        'Report to project maintainer personally or via email ' +
+        '&lt;<a href="mailto:' + email + '">' + email + '</a>&gt;');
+    } else {
+      throw e;
+    }
+  }
+};
+
 var startGame = function () {
   canvasSize = newCanvasSize()
   game = new TicTacToeGame();
@@ -31,6 +48,9 @@ var makeMoveTo = function (cellCoord) {
     sendNotification('Invalid move! Player: ' + game.currentPlayer);
   }
 };
+
+var makeBotGeneratedMove = _.compose(makeMoveTo, botGeneratedMove);
+
 
 var updateCanvasOnMoveTo = function (cellCoord) {
   if (selectedSquare) {

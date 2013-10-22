@@ -95,19 +95,11 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   var nxtSquare = this.nextSquare();
   var correctSquareCoord = (nxtSquare ? nxtSquare.coord : squareCoord);
 
-
-  // Additional checks if move is invalid
   // cannot put to already filled cell
   if (!this.getCell(coord).empty()) {
     return false;
   }
 
-  //  // cannot put in (a, a) point in the first move by rules
-  //  if (this.isFirstMove() && this.turnLeadsToSameSquare(coord)) {
-  //    return false;
-  //  }
-
-  // should put a mark only in the big square defined by the previous opponent move
   return _.isEqual(correctSquareCoord, squareCoord);
 };
 
@@ -234,63 +226,50 @@ TicTacToeGame.prototype._updateSquareOwnership = function (squareCoord, player) 
 };
 
 TicTacToeGame.prototype._checkWinner = function (player) {
-  for (var i = 0; i < this.baseSize; ++i) {
-    if (this._checkOuterRow(i, player) || this._checkOuterCol(i, player)) {
-      return true;
-    }
-  }
-  return this._checkOuterDiagonals(player);
+  var self = this;
+  return _.any(_.range(this.baseSize), function (index) {
+    return self._checkOuterRow(index, player) || self._checkOuterCol(index, player);
+  }) || this._checkOuterDiagonals(player);
 };
 
 TicTacToeGame.prototype._checkOuterRow = function (row, player) {
-  for (var col = 0; col < this.baseSize; ++col) {
-    if (this.getSquare(col, row).owner !== player) {
-      return false;
-    }
-  }
-  return true;
+  var self = this;
+  return _.all(_.range(this.baseSize), function (col) {
+    return self.getSquare(col, row).owner === player;
+  });
 };
 
 TicTacToeGame.prototype._checkOuterCol = function (col, player) {
-  for (var row = 0; row < this.baseSize; ++row) {
-    if (this.getSquare(col, row).owner !== player) {
-      return false;
-    }
-  }
-  return true;
+  var self = this;
+  return _.all(_.range(this.baseSize), function (row) {
+    return self.getSquare(col, row).owner === player;
+  });
 };
 
 TicTacToeGame.prototype._checkOuterDiagonals = function (player) {
-  // _check main diagonal
-  var mainDiagonal = true;
-  for (var row = 0; row < this.baseSize; ++row) {
-    if (this.getSquare(row, row).owner !== player) {
-      mainDiagonal = false;
-    }
-  }
-  if (mainDiagonal) {
-    return true;
-  }
+  var self = this;
+  var sz = this.baseSize;
+  var mainDiagonal = _.all(_.range(sz), function (row) {
+    return self.getSquare(row, row).owner === player;
+  });
 
-  // _check additional diagonal
-  // `var row` was declared in the loop above
-  for (row = 0; row < this.baseSize; ++row) {
-    if (this.getSquare(this.baseSize - row - 1, row).owner !== player) {
-      return false;
-    }
-  }
-  return true;
+  var additionalDiagonal = _.all(_.range(sz), function (row) {
+    return self.getSquare(row, sz - row - 1).owner === player;
+  });
+  return mainDiagonal || additionalDiagonal;
 };
 
 TicTacToeGame.prototype._checkSquareFull = function (SquareCoord) {
-  for (var row = SquareCoord.y * this.baseSize; row < (SquareCoord.y + 1) * this.baseSize; ++row) {
-    for (var col = SquareCoord.x * this.baseSize; col < (SquareCoord.x + 1) * this.baseSize; ++col) {
-      if (this.getCell(col, row).empty()) {
-        return false;
-      }
-    }
-  }
-  return true;
+  var self = this;
+  var sz = self.baseSize;
+  var y = SquareCoord.y;
+  var x = SquareCoord.x;
+  _.all(_.range(y * sz, (y + 1) * sz), function (row) {
+    return _.all(_.range(x * sz, (x + 1) * sz), function (col) {
+      return self.getCell(col, row).empty();
+    });
+  });
+
 };
 
 TicTacToeGame.prototype._checkInnerRow = function (SquareCoord, innerRow, currentPlayer) {
@@ -316,26 +295,13 @@ TicTacToeGame.prototype._checkInnerCol = function (SquareCoord, innerCol, curren
 };
 
 TicTacToeGame.prototype._checkInnerDiagonals = function (SquareCoord, currentPlayer) {
-  // _check main diagonal
-  var mainDiagonal = true;
-  var baseX = SquareCoord.x * this.baseSize;
-  var baseY = SquareCoord.y * this.baseSize;
-  for (var d = 0; d < this.baseSize; ++d) {
-    if (this.getCell(baseX + d, baseY + d).owner !== currentPlayer) {
-      mainDiagonal = false;
-    }
-  }
-  if (mainDiagonal) {
-    return true;
-  }
-
-  // _check additional diagonal
-  // `var d` was declared in the loop above
-  for (d = 0; d < this.baseSize; ++d) {
-    if (this.getCell(baseX + this.baseSize - d - 1, baseY + d).owner !== currentPlayer) {
-      return false;
-    }
-  }
-  return true;
+  var sz = this.baseSize;
+  var x = SquareCoord.x;
+  var y  = SquareCoord.y;
+  var self = this;
+  return _.all(_.range(sz), function (di) {
+    return self.getCell(x * sz + di, y * sz + di).owner === currentPlayer;
+  }) || _.all(_.range(sz), function (di) {
+    return self.getCell(x * sz + di, y * sz + sz - di - 1).owner === currentPlayer;
+  });
 };
-
