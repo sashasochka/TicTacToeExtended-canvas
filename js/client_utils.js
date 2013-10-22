@@ -24,7 +24,7 @@ var botGeneratedMove = function () {
     return bot.getMove(game);
   } catch (e) {
     if (e instanceof String) {
-      sendNotification('Exception in bot ' + bot.name + '\n' +
+      sendNotification('Exception in bot ' + bot.name + ': ' + e + '\n' +
         'Report to project maintainer personally or via email ' +
         '&lt;<a href="mailto:sasha.sochka@gmail.com">sasha.sochka@gmail.com</a>&gt;');
     } else {
