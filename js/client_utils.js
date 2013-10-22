@@ -33,9 +33,7 @@ var botGeneratedMove = function () {
   }
 };
 
-var makeBotGeneratedMoveWithDelay = function (delay) {
-  setTimeout(function () {
-    var moveCoord = botGeneratedMove();
-    makeMoveTo(moveCoord);
-  }, delay);
+var makeBotGeneratedMove = function () {
+  var moveCoord = botGeneratedMove();
+  makeMoveTo(moveCoord);
 };

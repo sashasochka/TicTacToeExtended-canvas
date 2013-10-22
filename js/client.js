@@ -17,9 +17,16 @@ var startGame = function () {
   canvas.cellClicked(makeMoveTo);
 };
 
+function botIntendedToMove() {
+  return !game.finished() && game.currentPlayer === 2 && opponentIsHuman;
+}
+
 var makeMoveTo = function (cellCoord) {
   if (game.makeTurn(cellCoord)) {
     updateCanvasOnMoveTo(cellCoord);
+    if (botIntendedToMove()) {
+      _.delay(makeBotGeneratedMove, 400);
+    }
   } else {
     sendNotification('Invalid move! Player: ' + game.currentPlayer);
   }
@@ -51,9 +58,6 @@ var updateCanvasOnMoveTo = function (cellCoord) {
     if (nextSquare) {
       selectedSquare = nextSquare.coord;
       canvas.getSquare(selectedSquare).select();
-    }
-    if (game.currentPlayer === 2 && opponentIsHuman) {
-      makeBotGeneratedMoveWithDelay(400);
     }
   }
 };
