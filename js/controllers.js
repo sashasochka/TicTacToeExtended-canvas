@@ -1,19 +1,15 @@
 function ControlsCtrl($scope) {
-  $scope.restart = function () {
-    startGame();
-  }
+  $scope.restart = startGame;
   $scope.toggleOpponent = function() {
     if (!opponentIsHuman && game.currentPlayer === 2) {
-      botGeneratedMove(canvas);
+      makeBotGeneratedMove();
     }
     opponentIsHuman = !opponentIsHuman;
   }
 }
 
 function PageCtrl($scope, $window) {
-  $scope.init = function () {
-    startGame()
-  }
+  $scope.init = startGame;
   angular.element($window).bind('resize', updateCanvasSize);
   angular.element($window).bind('orientationchange', updateCanvasSize);
 }
