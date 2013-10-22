@@ -90,7 +90,7 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   // some assertions
   assert(0 <= coord.x && coord.x < this.size, "x coordinate in makeTurn fails out of range");
   assert(0 <= coord.y && coord.y < this.size, "y coordinate in makeTurn fails out of range");
-  assert(!this.gameFinished(), "Cannot make moves after game is finished!");
+  assert(!this.finished(), "Cannot make moves after game is finished!");
   var squareCoord = this.squareCoordByCell(coord);
   var nxtSquare = this.nextSquare();
   var correctSquareCoord = (nxtSquare ? nxtSquare.coord : squareCoord);
@@ -111,7 +111,7 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
   return _.isEqual(correctSquareCoord, squareCoord);
 };
 
-TicTacToeGame.prototype.gameFinished = function () {
+TicTacToeGame.prototype.finished = function () {
   return this.winner() !== TicTacToeGame.undefinedWinner;
 };
 

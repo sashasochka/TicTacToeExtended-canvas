@@ -37,7 +37,7 @@ var updateCanvasOnMoveTo = function (cellCoord) {
   if (owner !== TicTacToeGame.undefinedWinner) {
     canvas.getSquare(previousSquareCoord).setOwnerBackground(owner);
   }
-  if (game.winner()) {
+  if (game.finished()) {
     var winner = game.winner();
     if (winner !== TicTacToeGame.draw) {
       sendNotification('Winner: Player ' + winner);
