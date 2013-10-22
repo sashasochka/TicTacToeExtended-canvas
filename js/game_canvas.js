@@ -63,6 +63,10 @@ var GameCanvas = function (container, gameEngine, size) {
     y: this.height / 110
   };
 
+  // uninitialized squares and cells
+  this.squares = [];
+  this.cells = [];
+
   // KineticJS elements
   this.stage = new Kinetic.Stage({
     container: this.container,
@@ -83,28 +87,28 @@ GameCanvas.vertical = 1;
 
 GameCanvas.Cell = function (square, innerCoord, outerCoord) {
   this.square = square;
-  this.field = square.field;
+  this.canvas = square.canvas;
   this.coord = outerCoord;
   this.innerCoord = innerCoord;
 
   this.groupSettings = {
-    x: this.field.firstCellCoord.x + innerCoord.x * this.field.cellsCoordDiff.x,
-    y: this.field.firstCellCoord.y + innerCoord.y * this.field.cellsCoordDiff.y
+    x: this.canvas.firstCellCoord.x + innerCoord.x * this.canvas.cellsCoordDiff.x,
+    y: this.canvas.firstCellCoord.y + innerCoord.y * this.canvas.cellsCoordDiff.y
   };
   this.rectSettings = {
     x: 0,
     y: 0,
-    width: this.field.cellsDim.width,
-    height: this.field.cellsDim.height,
-    fill: this.field.cellColor,
-    stroke: this.field.cellStrokeColor,
-    strokeWidth: this.field.cellBorderWidth
+    width: this.canvas.cellsDim.width,
+    height: this.canvas.cellsDim.height,
+    fill: this.canvas.cellColor,
+    stroke: this.canvas.cellStrokeColor,
+    strokeWidth: this.canvas.cellBorderWidth
   };
   this.group = new Kinetic.Group(this.groupSettings);
   this.cell = new Kinetic.Rect(this.rectSettings);
   var outerScopeThis = this;
   this.cell.on('click tap', function () {
-    outerScopeThis.field.raiseCellClicked(outerScopeThis.coord);
+    outerScopeThis.canvas.raiseCellClicked(outerScopeThis.coord);
   });
   this.group.add(this.cell);
   square.group.add(this.group);
@@ -117,31 +121,31 @@ GameCanvas.Cell.prototype.setBackground = function (color) {
 GameCanvas.Cell.prototype.drawCross = function () {
   var crossMainDiagonalLine = new Kinetic.Line({
     points: [
-      this.field.crossDiagonalPadding.x,
-      this.field.crossDiagonalPadding.x,
-      this.rectSettings.width - this.field.crossDiagonalPadding.x,
-      this.rectSettings.height - this.field.crossDiagonalPadding.y
+      this.canvas.crossDiagonalPadding.x,
+      this.canvas.crossDiagonalPadding.x,
+      this.rectSettings.width - this.canvas.crossDiagonalPadding.x,
+      this.rectSettings.height - this.canvas.crossDiagonalPadding.y
     ],
-    stroke: this.field.firstPlayerColor,
-    strokeWidth: this.field.crossStrokeWidth,
+    stroke: this.canvas.firstPlayerColor,
+    strokeWidth: this.canvas.crossStrokeWidth,
     lineCap: 'round',
     lineJoin: 'round'
   });
   var crossAdditionalDiagonalLine = new Kinetic.Line({
     points: [
-      this.rectSettings.x + this.field.crossDiagonalPadding.x,
-      this.rectSettings.y + this.rectSettings.height - this.field.crossDiagonalPadding.y,
-      this.rectSettings.x + this.rectSettings.width - this.field.crossDiagonalPadding.x,
-      this.rectSettings.y + this.field.crossDiagonalPadding.x
+      this.rectSettings.x + this.canvas.crossDiagonalPadding.x,
+      this.rectSettings.y + this.rectSettings.height - this.canvas.crossDiagonalPadding.y,
+      this.rectSettings.x + this.rectSettings.width - this.canvas.crossDiagonalPadding.x,
+      this.rectSettings.y + this.canvas.crossDiagonalPadding.x
     ],
-    stroke: this.field.firstPlayerColor,
-    strokeWidth: this.field.crossStrokeWidth,
+    stroke: this.canvas.firstPlayerColor,
+    strokeWidth: this.canvas.crossStrokeWidth,
     lineCap: 'round',
     lineJoin: 'round'
   });
   this.group.add(crossMainDiagonalLine);
   this.group.add(crossAdditionalDiagonalLine);
-  this.field.display();
+  this.canvas.display();
 };
 
 GameCanvas.Cell.prototype.drawCircle = function () {
@@ -149,43 +153,51 @@ GameCanvas.Cell.prototype.drawCircle = function () {
     x: this.rectSettings.width / 2,
     y: this.rectSettings.height / 2,
     radius: this.rectSettings.width / 2 - this.rectSettings.width / 15,
-    stroke: this.field.secondPlayerColor,
-    strokeWidth: this.field.circleStrokeWidth
+    stroke: this.canvas.secondPlayerColor,
+    strokeWidth: this.canvas.circleStrokeWidth
   });
   this.group.add(circle);
-  this.field.display();
+  this.canvas.display();
 };
 
-GameCanvas.Square = function (field, coord) {
-  this.field = field;
+GameCanvas.Cell.prototype.drawSymbolOfPlayer = function (player) {
+  if (player === 1) {
+    this.drawCross();
+  } else {
+    this.drawCircle();
+  }
+};
+
+GameCanvas.Square = function (canvas, coord) {
+  this.canvas = canvas;
   this.coord = coord;
   this.groupSettings = {
-    x: coord.x * field.squareCoordDiff.x,
-    y: coord.y * field.squareCoordDiff.y,
-    width: field.squareDimensions.width,
-    height: field.squareDimensions.height
+    x: coord.x * canvas.squareCoordDiff.x,
+    y: coord.y * canvas.squareCoordDiff.y,
+    width: canvas.squareDimensions.width,
+    height: canvas.squareDimensions.height
   };
   this.squareSettings = {
-    x: field.squareBorderWidth / 2,
-    y: field.squareBorderWidth / 2,
-    fill: field.squareBackgroundColor,
-    stroke: field.squareStrokeColor,
-    strokeWidth: field.squareBorderWidth
+    x: canvas.squareBorderWidth / 2,
+    y: canvas.squareBorderWidth / 2,
+    fill: canvas.squareBackgroundColor,
+    stroke: canvas.squareStrokeColor,
+    strokeWidth: canvas.squareBorderWidth
   };
   this.squareSettings.width = this.groupSettings.width - 2 * this.squareSettings.x;
   this.squareSettings.height = this.groupSettings.height - 2 * this.squareSettings.y;
   this.group = new Kinetic.Group(this.groupSettings);
   this.square = new Kinetic.Rect(this.squareSettings);
   this.group.add(this.square);
-  field.layer.add(this.group);
+  canvas.layer.add(this.group);
 };
 
 GameCanvas.Square.prototype.addCells = function () {
-  for (var row = 0; row < this.field.gameEngine.baseSize; ++row) {
-    for (var col = 0; col < this.field.gameEngine.baseSize; ++col) {
-      var y = this.coord.y * this.field.gameEngine.baseSize + row;
-      var x = this.coord.x * this.field.gameEngine.baseSize + col;
-      this.field.cells[y][x] = new GameCanvas.Cell(this, {
+  for (var row = 0; row < this.canvas.gameEngine.baseSize; ++row) {
+    for (var col = 0; col < this.canvas.gameEngine.baseSize; ++col) {
+      var y = this.coord.y * this.canvas.gameEngine.baseSize + row;
+      var x = this.coord.x * this.canvas.gameEngine.baseSize + col;
+      this.canvas.cells[y][x] = new GameCanvas.Cell(this, {
         y: row,
         x: col
       }, {
@@ -197,25 +209,25 @@ GameCanvas.Square.prototype.addCells = function () {
 };
 
 GameCanvas.Square.prototype.setOwnerBackground = function (owner) {
-  for (var row = 0; row < this.field.gameEngine.baseSize; ++row) {
-    for (var col = 0; col < this.field.gameEngine.baseSize; ++col) {
-      var y = this.coord.y * this.field.gameEngine.baseSize + row;
-      var x = this.coord.x * this.field.gameEngine.baseSize + col;
-      var color = field[(owner === 1) ? 'firstPlayerSquareBackgroundColor' : 'secondPlayerSquareBackgroundColor'];
-      this.field.cells[y][x].setBackground(color);
+  for (var row = 0; row < this.canvas.gameEngine.baseSize; ++row) {
+    for (var col = 0; col < this.canvas.gameEngine.baseSize; ++col) {
+      var y = this.coord.y * this.canvas.gameEngine.baseSize + row;
+      var x = this.coord.x * this.canvas.gameEngine.baseSize + col;
+      var color = canvas[(owner === 1) ? 'firstPlayerSquareBackgroundColor' : 'secondPlayerSquareBackgroundColor'];
+      this.canvas.cells[y][x].setBackground(color);
     }
   }
-  this.field.display();
+  this.canvas.display();
 };
 
 GameCanvas.Square.prototype.select = function () {
-  this.square.setStroke(this.field.selectedSquareStrokeColor);
-  this.field.display();
+  this.square.setStroke(this.canvas.selectedSquareStrokeColor);
+  this.canvas.display();
 };
 
 GameCanvas.Square.prototype.unselect = function () {
-  this.square.setStroke(this.field.squareStrokeColor);
-  this.field.display();
+  this.square.setStroke(this.canvas.squareStrokeColor);
+  this.canvas.display();
 };
 
 GameCanvas.prototype.addBackground = function () {
@@ -236,11 +248,11 @@ GameCanvas.prototype.addCells = function () {
   for (var row = 0; row < this.gameEngine.size; ++row) {
     this.cells[row] = [];
   }
-  for (var row = 0; row < this.gameEngine.baseSize; ++row) {
-    for (var col = 0; col < this.gameEngine.baseSize; ++col) {
-      this.squares[row][col].addCells();
-    }
-  }
+  _.each(this.squares,  function (row) {
+    _.each(row,  function (square) {
+      square.addCells();
+    });
+  });
 };
 
 GameCanvas.prototype.addSquares = function () {
@@ -250,6 +262,28 @@ GameCanvas.prototype.addSquares = function () {
     for (var x = 0; x < this.gameEngine.baseSize; ++x) {
       this.squares[y][x] = new GameCanvas.Square(this, {y: y, x: x});
     }
+  }
+};
+
+GameCanvas.prototype.getCell = function (arg1, arg2) {
+  if (arguments.length === 1) {
+    var coord = arg1;
+    return this.cells[coord.y][coord.x];
+  } else  if (arguments.length === 2) {
+    return this.cells[arg2][arg1];
+  } else {
+    throw 'Incorrect number of arguments to getCell function!'
+  }
+};
+
+GameCanvas.prototype.getSquare = function (arg1, arg2) {
+  if (arguments.length === 1) {
+    var coord = arg1;
+    return this.squares[coord.y][coord.x];
+  } else  if (arguments.length === 2) {
+    return this.squares[arg2][arg1];
+  } else {
+    throw 'Incorrect number of arguments to getCell function!'
   }
 };
 
@@ -275,9 +309,7 @@ GameCanvas.prototype.display = function () {
 };
 
 GameCanvas.prototype._addEvents = function (events) {
-  for (var index = 0; index < events.length; ++index) {
-    this._addEvent(events[index]);
-  }
+  _.each(events, _.bind(this._addEvent, this));
 };
 
 GameCanvas.prototype._addEvent = function (eventName) {

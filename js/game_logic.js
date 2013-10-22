@@ -77,7 +77,7 @@ TicTacToeGame.prototype.makeTurn = function (coord) {
   // now it's a turn of the next player
   // 2 becomes 1 and 1 becomes 2
   this.currentPlayer = this.opponentTo(this.currentPlayer);
-  this.previousTurnCoord = {x: coord.x, y: coord.y};
+  this.previousTurnCoord = _.clone(coord);
   this.turn++;
   return true;
 };
@@ -197,8 +197,10 @@ TicTacToeGame.prototype.opponentTo = function (player) {
 
 TicTacToeGame.prototype.turnLeadsToSameSquare = function (coord) {
   var squareCoord = this.squareCoordByCell(coord);
-  return coord.x % this.baseSize === squareCoord.x &&
-    coord.y % this.baseSize === squareCoord.y;
+  return _.isEqual(
+    {y: coord.y % this.baseSize, x: coord.x % this.baseSize},
+    squareCoord
+  );
 };
 
 TicTacToeGame.prototype.squareCoordByCell = function (coord) {

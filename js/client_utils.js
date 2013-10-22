@@ -6,9 +6,9 @@ var sendNotification = function (msg) {
   notificationElement.html(msg);
 };
 
-var newFieldSize = function () {
-  var deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width,
-    deviceHeight = (window.innerHeight > 0) ? window.innerHeight : screen.height;
+var newCanvasSize = function () {
+  var deviceWidth = $(window).width(),
+    deviceHeight = $(window).height();
   var result = Math.min(deviceWidth, deviceHeight) * 7 / 8;
   sendNotification('Size: ' + result + ', width: ' + deviceHeight + ', height: ' + deviceWidth);
   return {
@@ -23,7 +23,7 @@ var botGeneratedMove = function () {
   try {
     return bot.getMove(game);
   } catch (e) {
-    if (e.isString()) {
+    if (_.isString(e)) {
       sendNotification('Exception in bot ' + bot.name + ': ' + e + '\n' +
         'Report to project maintainer personally or via email ' +
         '&lt;<a href="mailto:sasha.sochka@gmail.com">sasha.sochka@gmail.com</a>&gt;');

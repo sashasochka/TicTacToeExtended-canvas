@@ -4,7 +4,7 @@ function ControlsCtrl($scope) {
   }
   $scope.toggleOpponent = function() {
     if (!opponentIsHuman && game.currentPlayer === 2) {
-      botGeneratedMove(field);
+      botGeneratedMove(canvas);
     }
     opponentIsHuman = !opponentIsHuman;
   }
@@ -14,6 +14,6 @@ function PageCtrl($scope, $window) {
   $scope.init = function () {
     startGame()
   }
-  angular.element($window).bind('resize', updateFieldSize);
-  angular.element($window).bind('orientationchange', updateFieldSize);
+  angular.element($window).bind('resize', updateCanvasSize);
+  angular.element($window).bind('orientationchange', updateCanvasSize);
 }

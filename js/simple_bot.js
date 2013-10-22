@@ -1,14 +1,13 @@
 "use strict";
 
 var SimpleBot = function () {
-  this.naame = 'SimpleBot';
+  this.name = 'SimpleBot';
 };
 
 SimpleBot.prototype.getMove = function (game) {
   var nMaxConsequentFails = 1000,
-    nMaxCleverTryFails = 900,
-    consequentFails = 0;
-  while (consequentFails < nMaxConsequentFails) {
+    nMaxCleverTryFails = 900;
+  for (var consequentFails = 0; consequentFails < nMaxConsequentFails; ++consequentFails) {
     var tryCoord = {
       x: _.random(game.size - 1),
       y: _.random(game.size - 1)
@@ -17,11 +16,7 @@ SimpleBot.prototype.getMove = function (game) {
     var isStupidMove = !game.getSquare(squareCoord).empty();
     if (game.isAllowedMove(tryCoord) && (!isStupidMove || consequentFails > nMaxCleverTryFails)) {
       return tryCoord;
-    } else {
-      ++consequentFails;
     }
   }
-  if (consequentFails === nMaxConsequentFails) {
-    throw 'No moves detected';
-  }
+  throw 'No moves detected';
 };

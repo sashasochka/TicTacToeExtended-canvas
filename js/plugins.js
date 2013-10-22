@@ -1,13 +1,5 @@
 "use strict";
 
-Object.prototype.isString = function () {
-  return false;
-};
-
-String.prototype.isString = function () {
-  return true;
-};
-
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
@@ -17,24 +9,20 @@ var noop = function () {
 
 // Avoid `console` errors in browsers that lack a console.
 (function () {
-  var method;
   var methods = [
     'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
     'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
     'profile', 'profileEnd', 'table', 'time', 'timeEnd',
     'timeStamp', 'trace', 'warn'
   ];
-  var length = methods.length;
   var console = (window.console = window.console || {});
 
-  while (length--) {
-    method = methods[length];
-
+  _.each(methods,  function (method) {
     // Only stub undefined methods.
     if (!console[method]) {
       console[method] = noop;
     }
-  }
+  });
 }());
 
 // helper functions

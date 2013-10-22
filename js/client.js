@@ -1,45 +1,41 @@
 "use strict";
 
-var fieldSize;
+var canvasSize;
 var game;
-var field;
+var canvas;
 var selectedSquare;
 
 var opponentIsHuman = true;
 
 var startGame = function () {
-  fieldSize = newFieldSize()
+  canvasSize = newCanvasSize()
   game = new TicTacToeGame();
-  field = new GameCanvas('TicTacToeCanvas', game, fieldSize);
-  field.setup();
-  updateFieldSize();
-  field.display();
-  field.cellClicked(makeMoveTo);
+  canvas = new GameCanvas('TicTacToeCanvas', game, canvasSize);
+  canvas.setup();
+  updateCanvasSize();
+  canvas.display();
+  canvas.cellClicked(makeMoveTo);
 };
 
 var makeMoveTo = function (cellCoord) {
   if (game.makeTurn(cellCoord)) {
-    updateFieldOnMoveTo(cellCoord);
+    updateCanvasOnMoveTo(cellCoord);
   } else {
     sendNotification('Invalid move! Player: ' + game.currentPlayer);
   }
 };
 
-var updateFieldOnMoveTo = function (cellCoord) {
+var updateCanvasOnMoveTo = function (cellCoord) {
   if (selectedSquare) {
-    field.squares[selectedSquare.y][selectedSquare.x].unselect();
+    canvas.getSquare(selectedSquare).unselect();
     selectedSquare = undefined;
   }
-  var cell = field.cells[cellCoord.y][cellCoord.x];
-  if (game.getCell(cellCoord).owner === 1) {
-    cell.drawCross();
-  } else {
-    cell.drawCircle();
-  }
+  var cell = canvas.getCell(cellCoord);
+  cell.drawSymbolOfPlayer(game.getCell(cellCoord).owner);
   var previousSquareCoord = game.squareCoordByCell(game.previousTurnCoord);
   var owner = game.getSquare(previousSquareCoord).owner;
   if (owner !== TicTacToeGame.undefinedWinner) {
-    field.squares[previousSquareCoord.y][previousSquareCoord.x].setOwnerBackground(owner);
+    canvas.getSquare(previousSquareCoord).setOwnerBackground(owner);
   }
   if (game.winner()) {
     var winner = game.winner();
@@ -54,7 +50,7 @@ var updateFieldOnMoveTo = function (cellCoord) {
     var nextSquare = game.nextSquare();
     if (nextSquare) {
       selectedSquare = nextSquare.coord;
-      field.squares[selectedSquare.y][selectedSquare.x].select();
+      canvas.getSquare(selectedSquare).select();
     }
     if (game.currentPlayer === 2 && opponentIsHuman) {
       makeBotGeneratedMoveWithDelay(400);
@@ -62,6 +58,6 @@ var updateFieldOnMoveTo = function (cellCoord) {
   }
 };
 
-var updateFieldSize = function () {
-  field.resize(newFieldSize());
+var updateCanvasSize = function () {
+  canvas.resize(newCanvasSize());
 };
