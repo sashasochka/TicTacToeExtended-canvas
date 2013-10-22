@@ -31,13 +31,13 @@ var updateFieldOnMoveTo = function (cellCoord) {
     selectedSquare = undefined;
   }
   var cell = field.cells[cellCoord.y][cellCoord.x];
-  if (game.cell[cellCoord.y][cellCoord.x].owner === 1) {
+  if (game.getCell(cellCoord).owner === 1) {
     cell.drawCross();
   } else {
     cell.drawCircle();
   }
   var previousSquareCoord = game.squareCoordByCell(game.previousTurnCoord);
-  var owner = game.square[previousSquareCoord.y][previousSquareCoord.x].owner;
+  var owner = game.getSquare(previousSquareCoord).owner;
   if (owner !== TicTacToeGame.undefinedWinner) {
     field.squares[previousSquareCoord.y][previousSquareCoord.x].setOwnerBackground(owner);
   }

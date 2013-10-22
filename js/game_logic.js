@@ -37,6 +37,28 @@ TicTacToeGame.Cell.prototype.empty = function () {
   return this.owner === 0;
 };
 
+TicTacToeGame.prototype.getCell = function (arg1, arg2) {
+  if (arguments.length === 1) {
+    var coord = arg1;
+    return this.cell[coord.y][coord.x];
+  } else  if (arguments.length === 2) {
+    return this.cell[arg2][arg1];
+  } else {
+    throw 'Incorrect number of arguments to getCell function!'
+  }
+};
+
+TicTacToeGame.prototype.getSquare = function (arg1, arg2) {
+  if (arguments.length === 1) {
+    var coord = arg1;
+    return this.square[coord.y][coord.x];
+  } else  if (arguments.length === 2) {
+    return this.square[arg2][arg1];
+  } else {
+    throw 'Incorrect number of arguments to getSquare function!'
+  }
+};
+
 TicTacToeGame.prototype.makeTurn = function (coord) {
   // makes a turn by the current user
   // returns false if a move is illegal
@@ -47,7 +69,7 @@ TicTacToeGame.prototype.makeTurn = function (coord) {
   var squareCoord = this.squareCoordByCell(coord);
 
   // update cell ownership
-  this.cell[coord.y][coord.x].owner = this.currentPlayer;
+  this.getCell(coord).owner = this.currentPlayer;
 
   // update square ownership
   this._updateSquareOwnership(squareCoord, this.currentPlayer);
@@ -76,7 +98,7 @@ TicTacToeGame.prototype.isAllowedMove = function (coord) {
 
   // Additional checks if move is invalid
   // cannot put to already filled cell
-  if (!this.cell[coord.y][coord.x].empty()) {
+  if (!this.getCell(coord).empty()) {
     return false;
   }
 
@@ -115,7 +137,7 @@ TicTacToeGame.prototype.impossibleToWin = function () {
     for (row = 0; row < this.baseSize; ++row) {
       var possibleWinByRow = true;
       for (col = 0; col < this.baseSize; ++col) {
-        if (this.square[row][col].owner === this.opponentTo(player)) {
+        if (this.getSquare(col, row).owner === this.opponentTo(player)) {
           possibleWinByRow = false;
           break;
         }
@@ -128,7 +150,7 @@ TicTacToeGame.prototype.impossibleToWin = function () {
     for (col = 0; col < this.baseSize; ++col) {
       var possibleWinByCol = true;
       for (row = 0; row < this.baseSize; ++row) {
-        if (this.square[row][col].owner === this.opponentTo(player)) {
+        if (this.getSquare(col, row).owner === this.opponentTo(player)) {
           possibleWinByCol = false;
           break;
         }
@@ -142,10 +164,10 @@ TicTacToeGame.prototype.impossibleToWin = function () {
     var possibleWinByMainDiagonal = true,
       possibleWinByAdditionalDiagonal = true;
     for (var index = 0; index < this.baseSize; ++index) {
-      if (this.square[index][index].owner === this.opponentTo(player)) {
+      if (this.getSquare(index, index).owner === this.opponentTo(player)) {
         possibleWinByMainDiagonal = false;
       }
-      if (this.square[index][this.baseSize - index - 1].owner === this.opponentTo(player)) {
+      if (this.getSquare(this.baseSize - index - 1, index).owner === this.opponentTo(player)) {
         possibleWinByAdditionalDiagonal = false;
       }
     }
@@ -161,12 +183,12 @@ TicTacToeGame.prototype.nextSquare = function () {
 
   var y = this.previousTurnCoord.y % this.baseSize;
   var x = this.previousTurnCoord.x % this.baseSize;
-  if (this.square[y][x].owner !== TicTacToeGame.undefinedWinner ||
+  if (this.getSquare(x, y).owner !== TicTacToeGame.undefinedWinner ||
       this._checkSquareFull({y: y,  x: x})) {
     return undefined;
   }
 
-  return this.square[y][x];
+  return this.getSquare(x, y);
 };
 
 TicTacToeGame.prototype.opponentTo = function (player) {
@@ -187,7 +209,7 @@ TicTacToeGame.prototype.squareCoordByCell = function (coord) {
 };
 
 TicTacToeGame.prototype._updateSquareOwnership = function (squareCoord, player) {
-  if (!this.square[squareCoord.y][squareCoord.x].empty()) {
+  if (!this.getSquare(squareCoord).empty()) {
     return;
   }
   var playerOwnsSquare = false;
@@ -205,7 +227,7 @@ TicTacToeGame.prototype._updateSquareOwnership = function (squareCoord, player) 
     playerOwnsSquare = true;
   }
   if (playerOwnsSquare) {
-    this.square[squareCoord.y][squareCoord.x].owner = player;
+    this.getSquare(squareCoord).owner = player;
   }
 };
 
@@ -220,7 +242,7 @@ TicTacToeGame.prototype._checkWinner = function (player) {
 
 TicTacToeGame.prototype._checkOuterRow = function (row, player) {
   for (var col = 0; col < this.baseSize; ++col) {
-    if (this.square[row][col].owner !== player) {
+    if (this.getSquare(col, row).owner !== player) {
       return false;
     }
   }
@@ -229,7 +251,7 @@ TicTacToeGame.prototype._checkOuterRow = function (row, player) {
 
 TicTacToeGame.prototype._checkOuterCol = function (col, player) {
   for (var row = 0; row < this.baseSize; ++row) {
-    if (this.square[row][col].owner !== player) {
+    if (this.getSquare(col, row).owner !== player) {
       return false;
     }
   }
@@ -240,7 +262,7 @@ TicTacToeGame.prototype._checkOuterDiagonals = function (player) {
   // _check main diagonal
   var mainDiagonal = true;
   for (var row = 0; row < this.baseSize; ++row) {
-    if (this.square[row][row].owner !== player) {
+    if (this.getSquare(row, row).owner !== player) {
       mainDiagonal = false;
     }
   }
@@ -251,7 +273,7 @@ TicTacToeGame.prototype._checkOuterDiagonals = function (player) {
   // _check additional diagonal
   // `var row` was declared in the loop above
   for (row = 0; row < this.baseSize; ++row) {
-    if (this.square[row][this.baseSize - row - 1].owner !== player) {
+    if (this.getSquare(this.baseSize - row - 1, row).owner !== player) {
       return false;
     }
   }
@@ -261,7 +283,7 @@ TicTacToeGame.prototype._checkOuterDiagonals = function (player) {
 TicTacToeGame.prototype._checkSquareFull = function (SquareCoord) {
   for (var row = SquareCoord.y * this.baseSize; row < (SquareCoord.y + 1) * this.baseSize; ++row) {
     for (var col = SquareCoord.x * this.baseSize; col < (SquareCoord.x + 1) * this.baseSize; ++col) {
-      if (this.cell[row][col].empty()) {
+      if (this.getCell(col, row).empty()) {
         return false;
       }
     }
@@ -273,7 +295,7 @@ TicTacToeGame.prototype._checkInnerRow = function (SquareCoord, innerRow, curren
   var colStart = this.baseSize * SquareCoord.x;
   var row = this.baseSize * SquareCoord.y + innerRow;
   for (var col = colStart; col < colStart + this.baseSize; ++col) {
-    if (this.cell[row][col].owner !== currentPlayer) {
+    if (this.getCell(col, row).owner !== currentPlayer) {
       return false;
     }
   }
@@ -284,7 +306,7 @@ TicTacToeGame.prototype._checkInnerCol = function (SquareCoord, innerCol, curren
   var rowStart = this.baseSize * SquareCoord.y;
   var col = this.baseSize * SquareCoord.x + innerCol;
   for (var row = rowStart; row < rowStart + this.baseSize; ++row) {
-    if (this.cell[row][col].owner !== currentPlayer) {
+    if (this.getCell(col, row).owner !== currentPlayer) {
       return false;
     }
   }
@@ -297,7 +319,7 @@ TicTacToeGame.prototype._checkInnerDiagonals = function (SquareCoord, currentPla
   var baseX = SquareCoord.x * this.baseSize;
   var baseY = SquareCoord.y * this.baseSize;
   for (var d = 0; d < this.baseSize; ++d) {
-    if (this.cell[baseY + d][baseX + d].owner !== currentPlayer) {
+    if (this.getCell(baseX + d, baseY + d).owner !== currentPlayer) {
       mainDiagonal = false;
     }
   }
@@ -308,7 +330,7 @@ TicTacToeGame.prototype._checkInnerDiagonals = function (SquareCoord, currentPla
   // _check additional diagonal
   // `var d` was declared in the loop above
   for (d = 0; d < this.baseSize; ++d) {
-    if (this.cell[baseY + d][baseX + this.baseSize - d - 1].owner !== currentPlayer) {
+    if (this.getCell(baseX + this.baseSize - d - 1, baseY + d).owner !== currentPlayer) {
       return false;
     }
   }

@@ -50,8 +50,8 @@ gameLogicTest.prototype.testMoveSameCell = function () {
 
 gameLogicTest.prototype.testSquareTopLeftCellCoord = function () {
   var game = new TicTacToeGame();
-  assertSame(game.square[1][2].topLeftCellCoord.x, 6);
-  assertSame(game.square[1][2].topLeftCellCoord.y, 3);
+  assertSame(game.getSquare(2, 1).topLeftCellCoord.x, 6);
+  assertSame(game.getSquare(2, 1).topLeftCellCoord.y, 3);
 };
 
 gameLogicTest.prototype.testNextSquare = function () {
@@ -78,8 +78,8 @@ gameLogicTest.prototype.testGameCutEarlierByDraw = function () {
     secondPlayerSquares = [[1, 0], [0, 1], [0, 2], [2, 2]];
   for (var i = 0; i < firstPlayerSquares.length; ++i) {
     assertFalse(game.impossibleToWin());
-    game.square[firstPlayerSquares[i][1]][firstPlayerSquares[i][0]].owner = 1;
-    game.square[secondPlayerSquares[i][1]][secondPlayerSquares[i][0]].owner = 2;
+    game.getSquare(firstPlayerSquares[i][0], firstPlayerSquares[i][1]).owner = 1;
+    game.getSquare(secondPlayerSquares[i][0], secondPlayerSquares[i][1]).owner = 2;
   }
   assertTrue(game.impossibleToWin());
 };

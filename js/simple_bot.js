@@ -14,7 +14,7 @@ SimpleBot.prototype.getMove = function (game) {
       y: _.random(game.size - 1)
     };
     var squareCoord = game.squareCoordByCell(tryCoord);
-    var isStupidMove = !game.square[squareCoord.y][squareCoord.x].empty();
+    var isStupidMove = !game.getSquare(squareCoord).empty();
     if (game.isAllowedMove(tryCoord) && (!isStupidMove || consequentFails > nMaxCleverTryFails)) {
       return tryCoord;
     } else {
