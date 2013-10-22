@@ -1,5 +1,13 @@
 "use strict";
 
+Object.prototype.isString = function () {
+  return false;
+};
+
+String.prototype.isString = function () {
+  return true;
+};
+
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
