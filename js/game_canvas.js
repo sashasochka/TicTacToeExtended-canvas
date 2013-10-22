@@ -89,7 +89,7 @@ GameCanvas.Cell = function (square, innerCoord, outerCoord) {
 
   this.groupSettings = {
     x: this.field.firstCellCoord.x + innerCoord.x * this.field.cellsCoordDiff.x,
-    y: this.field.firstCellCoord.y + innerCoord.y * this.field.cellsCoordDiff.y,
+    y: this.field.firstCellCoord.y + innerCoord.y * this.field.cellsCoordDiff.y
   };
   this.rectSettings = {
     x: 0,
